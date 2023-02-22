@@ -12,6 +12,7 @@ import { HeaderComponent } from './navigation/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableServerSideComponent } from './table-server-side/table-server-side.component';
 import { FilterComponent } from './filter/filter.component';
+import { ActiveFilterComponent } from './active-filter/active-filter.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FilterComponent } from './filter/filter.component';
     PageNotFoundComponent,
     HeaderComponent,
     TableServerSideComponent,
-    FilterComponent
+    FilterComponent,
+    ActiveFilterComponent
   ],
   imports: [
     BrowserModule,

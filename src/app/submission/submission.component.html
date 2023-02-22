@@ -4,7 +4,7 @@
 
   <div fxLayoutGap="2%" fxLayout="row" fxLayout.lt-md="column">
     <div fxFlex="17">
-      <app-filter title="Assay type" [filterSize]=3></app-filter>
+      <app-filter title="Assay type" [filterSize]=50></app-filter>
     </div>
 
     <div fxFlex="83" class="table-responsive">
@@ -13,7 +13,6 @@
         <button mat-raised-button (click)="removeFilter()">Remove all filters</button>
         <hr>
       </div>
-
 
       <app-table-server-side  [display_fields]="displayFields"
                               [column_names]="columnNames"

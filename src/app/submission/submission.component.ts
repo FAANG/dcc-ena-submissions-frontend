@@ -102,6 +102,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   hasActiveFilters() {
+    console.log("this.filter_field: ", this.filter_field)
     if (typeof this.filter_field === 'undefined') {
       return false;
     }
