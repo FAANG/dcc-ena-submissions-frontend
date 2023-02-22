@@ -1,0 +1,49 @@
+.long-list {
+  max-height: 300px;
+  overflow-y: scroll;
+  overflow-x: auto;
+}
+
+.item {
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.mat-card {
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.filter-header {
+  background-color: #DCEDF5;
+  color: #577C95;
+  cursor: default;
+}
+
+.filter-header i {
+  cursor: pointer;
+}
+
+.active {
+  background-color: #477AAF;
+  color: white;
+}
+
+.active>span {
+  background-color: white;
+  color: #477AAF;
+}
+
+h6 {
+  font-size: 14px;
+}
+
+.badge-secondary {
+  background-color: #DCEDF5;
+  color: black;
+  width: 4em;
+  padding: 0.4em 0.6em 0.4em 0.6em;
+  border-radius: 7px
+}

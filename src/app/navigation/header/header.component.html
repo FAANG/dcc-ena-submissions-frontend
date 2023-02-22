@@ -1,0 +1,14 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span>
+      <a [routerLink]="'/'"> <img src="/assets/logos/faang-logo.png" alt="image" class="header-logo"> </a>
+    </span>
+    <span class="menu-spacer"></span>
+    <div fxFlex fxLayout fxLayoutAlign="start">
+      <a mat-button [routerLink]="'/'" routerLinkActive="activebutton" [routerLinkActiveOptions]="{exact: true}">
+        <span class="link-text">ENA Submissions</span></a>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+

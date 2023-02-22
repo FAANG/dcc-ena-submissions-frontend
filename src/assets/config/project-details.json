@@ -1,0 +1,79 @@
+{
+  "EuroFAANG": {
+    "description": "EuroFAANG is a coordinated effort to unravel the connection between the genetic make-up of an animal and the observable physical and physiological traits. The EuroFAANG projects aim to address challenges in farmed animal production.",
+    "tweeter": {
+      "id": "EuroFAANG"
+    },
+    "url": "https://www.gene-switch.eu/eurofaang.html",
+    "image": {
+      "url": "https://github.com/FAANG/comm-data-portal-projects/raw/master/projects/eurofaang/project-logo.png"
+    }
+  },
+  "GENE-SWitCH": {
+    "description": "GENE-SWitCH aims to deliver new underpinning knowledge on the functional genomes of two main monogastric farm species (pig and chicken) and to enable immediate translation to the pig and poultry sectors.",
+    "tweeter": {
+      "id": "GeneSwitch"
+    },
+    "url": "https://www.gene-switch.eu/",
+    "image": {
+      "url": "https://github.com/FAANG/comm-data-portal-projects/raw/master/projects/gene-switch/project-logo.png"
+    },
+    "parent_project": "EuroFAANG"
+  },
+  "BovReg": {
+    "description": "The BovReg consortium will provide a comprehensive map of functionally active genomic features in cattle and how their (epi)genetic variation in beef and dairy breeds translates into phenotypes.",
+    "tweeter": {
+      "id": "BovReg"
+    },
+    "url": "https://www.bovreg.eu/",
+    "image": {
+      "url": "https://github.com/FAANG/comm-data-portal-projects/raw/master/projects/bovreg/project-logo.jpg"
+    },
+    "parent_project": "EuroFAANG"
+  },
+  "AQUA-FAANG": {
+    "description": "AQUA-FAANG aims to generate genome-wide functional annotation maps for the six commercially most important fish species within European aquaculture and exploit their contribution to variation in traits of commercial relevance, focusing on improved resistance to disease.",
+    "tweeter": {
+      "id": "AQUA_FAANG"
+    },
+    "url": "https://www.aqua-faang.eu/",
+    "image": {
+      "url": "https://github.com/FAANG/comm-data-portal-projects/raw/master/projects/aquafaang/project-logo.png"
+    },
+    "parent_project": "EuroFAANG"
+  },
+
+  "GEroNIMO": {
+    "description": "GEroNIMO will work on chicken and pig, the most used sources of animal protein worldwide, to provide breeders with new knowledge and tools to promote innovative genome and epigenome enabled selection methods for traits related to production (quantity and quality), efficiency, productive longevity, fertility, resilience and welfare.",
+    "tweeter": {
+      "id": "GeronimoH2020"
+    },
+    "url": "https://www.geronimo-h2020.eu/",
+    "image": {
+      "url": "https://github.com/FAANG/comm-data-portal-projects/raw/master/projects/geronimo/project-logo.png"
+    },
+    "parent_project": "EuroFAANG"
+  },
+  "RUMIGEN": {
+    "description": "RUMIGEN is a multi-actor project aiming to improve genetic tools in bovine breeds through the addition of new traits such as heat tolerance, and epigenetic information.",
+    "tweeter": {
+      "id": "RUMIGENH2020"
+    },
+    "url": "https://rumigen.eu/",
+    "image": {
+      "url": "https://github.com/FAANG/comm-data-portal-projects/raw/master/projects/rumigen/project-logo.png"
+    },
+    "parent_project": "EuroFAANG"
+  },
+  "HoloRuminant": {
+    "description": "",
+    "tweeter": {
+      "id": ""
+    },
+    "url": "https://holoruminant.eu/",
+    "image": {
+      "url": "https://github.com/FAANG/comm-data-portal-projects/raw/master/projects/holoruminant/project-logo.jpeg"
+    },
+    "parent_project": "EuroFAANG"
+  }
+}
