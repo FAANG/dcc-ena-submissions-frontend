@@ -29,61 +29,30 @@ interface DatasetTable {
 
 
 export class SubmissionComponent implements OnInit, OnDestroy {
-  @ViewChild('datasetAccessionTemplate', { static: true }) datasetAccessionTemplate: TemplateRef<any>;
-  @ViewChild('paperPublishedTemplate', { static: true }) paperPublishedTemplate: TemplateRef<any>;
   @ViewChild(TableServerSideComponent, { static: true }) tableServerComponent: TableServerSideComponent;
   public loadTableDataFunction: Function;
   datasetListShort: Observable<DatasetTable[]>;
   datasetListLong: Observable<DatasetTable[]>;
-  displayFields: string[] = ['datasetAccession', 'title', 'species', 'archive', 'assayType', 'numberOfExperiments',
-    'numberOfSpecimens', 'numberOfFiles', 'standard', 'paperPublished'];
-  columnNames: string[] = ['Dataset accession', 'Title', 'Species', 'Archive',  'Assay type', 'Number of Experiments',
-    'Number of Specimens', 'Number of Files', 'Standard', 'Paper published'];
+  displayFields: string[] = ['studyId', 'studyAlias', 'assayType', 'numberOfExperiments', 'numberOfRuns', 'numberOfFiles'];
+  columnNames: string[] = ['Study Id', 'Study Alias', 'Assay Type', 'Number of Experiments',  'Number of runs', 'Number of Files'];
   filter_field: {};
   templates: Object;
   aggrSubscription: Subscription;
-  downloadData = false;
-  downloading = false;
   data = {};
 
   query = {
-    'sort': ['accession','desc'],
+    'sort': ['study_id','desc'],
     '_source': [
-      'accession',
-      'title',
-      'species.text',
-      'archive',
-      'experiment.accession',
-      'file.name',
-      'specimen.biosampleId',
-      'assayType',
-      'standardMet',
-      'paperPublished',
-      'submitterEmail'],
+      'study_id',
+      'study_alias',
+      'assay_type',
+      'experiments.accession',
+      'runs.accession',
+      'files.name'],
     'search': ''
   };
 
-  downloadQuery = {
-    'sort': ['accession','desc'],
-    '_source': [
-      '_source.accession',
-      '_source.title',
-      '_source.species.text',
-      '_source.archive',
-      '_source.experiment.accession',
-      '_source.file.name',
-      '_source.specimen.biosampleId',
-      '_source.assayType',
-      '_source.standardMet',
-      '_source.paperPublished',
-      '_source.submitterEmail'
-    ],
-    'columns': this.columnNames.concat(['Submitter Email']),
-    'filters': {},
-    'file_format': 'csv',
-  };
-
-  defaultSort = ['accession','desc'];
+  defaultSort = ['study_id','desc'];
   error: string;
 
   constructor(private dataService: ApiDataService,
@@ -93,10 +62,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
               private titleService: Title) { }
 
   ngOnInit() {
-    this.templates = {'datasetAccession': this.datasetAccessionTemplate,
-      'paperPublished': this.paperPublishedTemplate };
-    this.loadTableDataFunction = this.dataService.getAllDatasets.bind(this.dataService);
-    this.titleService.setTitle('FAANG datasets');
+    this.loadTableDataFunction = this.dataService.getAllEnaSubmissions.bind(this.dataService);
+    this.titleService.setTitle('ENA Submissions');
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.resetFilter();
       const filters = {};
@@ -116,14 +83,12 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       this.aggregationService.field.next(this.aggregationService.active_filters);
       this.filter_field = filters;
       this.query['filters'] = filters;
-      this.downloadQuery['filters'] = filters;
       this.filter_field = Object.assign({}, this.filter_field);
     });
     this.tableServerComponent.dataUpdate.subscribe((data) => {
-      this.aggregationService.getAggregations(data.aggregations, 'dataset');
+      this.aggregationService.getAggregations(data.aggregations);
     });
     this.tableServerComponent.sortUpdate.subscribe((sortParams) => {
-      this.downloadQuery['sort'] = sortParams;
     });
     this.aggrSubscription = this.aggregationService.field.subscribe((data) => {
       const params = {};
@@ -132,7 +97,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
           params[key] = data[key];
         }
       }
-      this.router.navigate(['dataset'], {queryParams: params});
+      this.router.navigate(['submissions'], {queryParams: params});
     });
   }
 
@@ -158,50 +123,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
 
   removeFilter() {
     this.resetFilter();
-    this.router.navigate(['dataset'], {queryParams: {}});
-  }
-
-  onDownloadData() {
-    this.downloadData = !this.downloadData;
-  }
-
-  downloadFile(format: string) {
-    this.downloadData = !this.downloadData;
-    this.downloading = true;
-    this.downloadQuery['file_format'] = format;
-    let mapping = {
-      'datasetAccession': 'accession',
-      'title': 'title',
-      'species': 'species.text',
-      'archive': 'archive',
-      'assayType': 'assayType',
-      'numberOfExperiments': 'experiment.accession',
-      'numberOfSpecimens': 'specimen.biosampleId',
-      'numberOfFiles': 'file.name',
-      'standard': 'standardMet',
-      'paper_published': 'paperPublished',
-      'submitterEmail': 'submitterEmail'
-    }
-    this.dataService.downloadRecords('dataset', mapping, this.downloadQuery).subscribe(
-      (res:Blob)=>{
-        var a = document.createElement("a");
-        a.href = URL.createObjectURL(res);
-        a.download = 'faang_data.' + format;
-        a.click();
-        this.downloading = false;
-      },
-      (err) => {
-        this.downloading = false;
-      }
-    );
-  }
-
-  wasPublished(published: any) {
-    return published === 'true';
-  }
-
-  isGreen(published: any) {
-    return published === 'true' ? 'green' : 'default';
+    this.router.navigate(['submissions'], {queryParams: {}});
   }
 
   ngOnDestroy() {

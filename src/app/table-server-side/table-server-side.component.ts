@@ -16,7 +16,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class TableServerSideComponent implements AfterViewInit {
   @Input() display_fields: Array<string>; // list of fields to be displayed in the table
   @Input() column_names: Array<string>; // list of column headers for the selected fields
-  @Input() templates: Object; // column templates
   @Input() filter_values: Observable<Object>; // filter values in the format { col1: [val1, val2..], col2: [val1, val2...], ... }
   @Input() apiFunction: Function; // function that queries the API endpoints
   @Input() query: Object; // query params ('sort', 'aggs', 'filters', '_source', 'from_')
