@@ -6,21 +6,6 @@ import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {TableServerSideComponent} from "../table-server-side/table-server-side.component";
 
-interface DatasetTable {
-  datasetAccession: string;
-  title: string;
-  species: string;
-  archive: string;
-  assayType: string;
-  numberOfExperiments: string;
-  numberOfSpecimens: string;
-  numberOfFiles: string;
-  standard: string;
-  paperPublished: string;
-  private: boolean;
-  submitterEmail: string;
-}
-
 @Component({
   selector: 'app-submission',
   templateUrl: './submission.component.html',
@@ -31,8 +16,6 @@ interface DatasetTable {
 export class SubmissionComponent implements OnInit, OnDestroy {
   @ViewChild(TableServerSideComponent, { static: true }) tableServerComponent: TableServerSideComponent;
   public loadTableDataFunction: Function;
-  datasetListShort: Observable<DatasetTable[]>;
-  datasetListLong: Observable<DatasetTable[]>;
   displayFields: string[] = ['studyId', 'studyAlias', 'assayType', 'numberOfExperiments', 'numberOfRuns', 'numberOfFiles'];
   columnNames: string[] = ['Study Id', 'Study Alias', 'Assay Type', 'Number of Experiments',  'Number of runs', 'Number of Files'];
   filter_field: {};

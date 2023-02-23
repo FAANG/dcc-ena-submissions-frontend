@@ -32,10 +32,6 @@ export class TableServerSideComponent implements AfterViewInit {
   timer: any;
   delaySearch: boolean = true;
 
-  male_values = ['male', 'male genotypic sex', 'intact male', 'M', 'Male'];
-  female_values = ['female', 'female genotypic sex', 'intact female', 'F', 'Female'];
-  published_article_source = ['AGR', 'CBA', 'CTX', 'MED', 'PMC'];
-
   constructor(private spinner: NgxSpinnerService,) { }
 
   ngAfterViewInit() {
@@ -95,44 +91,12 @@ export class TableServerSideComponent implements AfterViewInit {
         // process assayType filter
         if (col === 'assayType') {
           this.query['filters'][col].forEach((val, i) => {
-            if (val == 'RNA-Seq') {
-              this.query['filters'][col][i] = 'transcription profiling by high throughput sequencing';
-              this.query['filters'][col].push('RNA-Seq');
-            }
+            this.query['filters'][col][i] = val;
           });
-        }
-        // process sex filter
-        if (col == 'sex') {
-          let sex_val = [];
-          this.query['filters'][col].forEach((val, i) => {
-            if (val == 'male') {
-              sex_val = sex_val.concat(this.male_values);
-            }
-            else if (val == 'female') {
-              sex_val = sex_val.concat(this.female_values);
-            }
-            else {
-              sex_val.push(val);
-            }
-          });
-          this.query['filters'][col] = sex_val;
         }
 
-        // process article source (Article Type) filter
-        if (col === 'source') {
-          let source_val = [];
-          this.query['filters'][col].forEach((val, i) => {
-            if (val === 'preprint') {
-              source_val = source_val.concat('PPR');
-            } else if (val === 'published') {
-              source_val = source_val.concat(this.published_article_source);
-            }
-            else {
-              source_val.push(val);
-            }
-          });
-          this.query['filters'][col] = source_val;
-        }
+
+
 
 
       }
