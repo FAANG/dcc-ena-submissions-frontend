@@ -54,23 +54,25 @@ export class SubmissionComponent implements OnInit, OnDestroy {
         if (Array.isArray(params[key])) { // multiple values chosed for one filter
           filters[key] = params[key];
           for (const value of params[key]) {
-            this.aggregationService.current_active_filters.push(value);
-            this.aggregationService.active_filters[key].push(value);
+            this.aggregationService.currentActiveFilters.push(value);
+            this.aggregationService.activeFilters[key].push(value);
           }
         } else {
           filters[key] = [params[key]];
-          this.aggregationService.current_active_filters.push(params[key]);
-          this.aggregationService.active_filters[key].push(params[key]);
+          this.aggregationService.currentActiveFilters.push(params[key]);
+          this.aggregationService.activeFilters[key].push(params[key]);
         }
       }
-      this.aggregationService.field.next(this.aggregationService.active_filters);
+      this.aggregationService.field.next(this.aggregationService.activeFilters);
       this.filter_field = filters;
       this.query['filters'] = filters;
       this.filter_field = Object.assign({}, this.filter_field);
     });
+
     this.tableServerComponent.dataUpdate.subscribe((data) => {
       this.aggregationService.getAggregations(data.aggregations);
     });
+
     this.tableServerComponent.sortUpdate.subscribe((sortParams) => {
     });
     this.aggrSubscription = this.aggregationService.field.subscribe((data) => {
@@ -85,7 +87,6 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   hasActiveFilters() {
-    console.log("this.filter_field: ", this.filter_field)
     if (typeof this.filter_field === 'undefined') {
       return false;
     }
@@ -98,10 +99,10 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   }
 
   resetFilter() {
-    for (const key of Object.keys(this.aggregationService.active_filters)) {
-      this.aggregationService.active_filters[key] = [];
+    for (const key of Object.keys(this.aggregationService.activeFilters)) {
+      this.aggregationService.activeFilters[key] = [];
     }
-    this.aggregationService.current_active_filters = [];
+    this.aggregationService.currentActiveFilters = [];
     this.filter_field = Object.assign({}, this.filter_field);
   }
 

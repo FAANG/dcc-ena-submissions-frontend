@@ -1,10 +1,10 @@
-import { Component, Input, Output, AfterViewInit, ViewChild, EventEmitter} from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Observable, merge, of as observableOf } from 'rxjs';
-import { map, startWith, switchMap, catchError } from 'rxjs/operators';
-import { NgxSpinnerService } from 'ngx-spinner';
+import {Component, Input, Output, AfterViewInit, ViewChild, EventEmitter} from '@angular/core';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
+import {Observable, merge, of as observableOf} from 'rxjs';
+import {map, startWith, switchMap, catchError} from 'rxjs/operators';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 
 @Component({
@@ -24,25 +24,27 @@ export class TableServerSideComponent implements AfterViewInit {
   @Output() dataUpdate = new EventEmitter<any>();
   @Output() sortUpdate = new EventEmitter<any>();
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   dataSource = new MatTableDataSource();
   totalHits = 0;
   timer: any;
-  delaySearch: boolean = true;
 
-  constructor(private spinner: NgxSpinnerService,) { }
+  constructor(private spinner: NgxSpinnerService,) {
+  }
 
   ngAfterViewInit() {
     // Reset back to the first page when sort order is changed
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    console.log("this.query: ", this.query)
+
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         startWith({}),
         switchMap(() => {
           this.spinner.show();
-          if(this.sort.active && this.sort.direction) {
+          if (this.sort.active && this.sort.direction) {
             this.query['sort'] = [this.sort.active, this.sort.direction];
             this.sortUpdate.emit(this.query['sort']);
           } else {
@@ -60,9 +62,9 @@ export class TableServerSideComponent implements AfterViewInit {
           return observableOf([]);
         })
       ).subscribe((res: any) => {
-      this.dataSource.data = res.data; // set table data
-      this.dataUpdate.emit(res); // emit data update event
-      this.totalHits = res.totalHits; // set length of paginator
+      this.dataSource.data = res.data;
+      this.dataUpdate.emit(res);
+      this.totalHits = res.totalHits;
       this.spinner.hide();
     });
   }
@@ -73,7 +75,7 @@ export class TableServerSideComponent implements AfterViewInit {
       this.spinner.show();
       // reset query params before applying filter
       this.paginator.pageIndex = 0;
-      if(this.sort.active && this.sort.direction) {
+      if (this.sort.active && this.sort.direction) {
         this.query['sort'] = [this.sort.active, this.sort.direction];
         this.sortUpdate.emit(this.query['sort']);
       } else {
@@ -81,25 +83,7 @@ export class TableServerSideComponent implements AfterViewInit {
       }
       this.sortUpdate.emit(this.query['sort']);
       this.query['from_'] = 0;
-      for (const col in this.query['filters']) {
-        // process paper_published filter
-        if (col === 'paper_published') {
-          this.query['filters'][col].forEach((val, i) => {
-            val == 'Yes' ? this.query['filters'][col][i] = 'true' : this.query['filters'][col][i] = 'false';
-          });
-        }
-        // process assayType filter
-        if (col === 'assayType') {
-          this.query['filters'][col].forEach((val, i) => {
-            this.query['filters'][col][i] = val;
-          });
-        }
 
-
-
-
-
-      }
       this.apiFunction(this.query, 25).subscribe((res: any) => {
         this.dataSource.data = res.data; // set table data
         this.dataUpdate.emit(res); // emit data update event
@@ -109,17 +93,9 @@ export class TableServerSideComponent implements AfterViewInit {
     }
   }
 
-  searchChanged(event: any){
-    const searchFilterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    if (this.delaySearch){
-      if (this.timer){
-        clearTimeout(this.timer);
-      }
-      this.timer = setTimeout(this.applySearchFilter.bind(this), 500, searchFilterValue);
-    }
-    else {
-      this.applySearchFilter(searchFilterValue);
-    }
+  searchChanged(event: any) {
+    const searchFilterValue = (event.target as HTMLInputElement).value.trim();
+    setTimeout(this.applySearchFilter.bind(this), 500, searchFilterValue);
   }
 
   applySearchFilter(value: string) {

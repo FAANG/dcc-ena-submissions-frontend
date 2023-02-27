@@ -7,6 +7,7 @@ import {AggregationService} from "../services/aggregation.service";
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css']
 })
+
 export class FilterComponent implements OnInit, OnDestroy {
   @Input() title: string;
   @Input() filterSize: number;
@@ -14,18 +15,19 @@ export class FilterComponent implements OnInit, OnDestroy {
   subsription: Subscription;
   isCollapsed = true;
   itemLimit: number;
-  current_active_filters = this.aggregationService.current_active_filters;
+  currentActiveFilters = this.aggregationService.currentActiveFilters;
 
   constructor(
     private aggregationService: AggregationService,
-    private cdRef: ChangeDetectorRef) { }
+    private cdRef: ChangeDetectorRef) {
+  }
 
   ngOnInit() {
     console.log("tile: ", this.title)
     this.itemLimit = this.filterSize;
     this.subsription = this.aggregationService.data.subscribe(
       (data: any) => {
-        // data is a map, keys are active_filters names defined in service/aggregatin_service.ts,
+        // data is a map, keys are activeFilters names defined in service/aggregatin_service.ts,
         // values are the corresponding aggregation e.g. { "FAANG":675,"Legacy": 9834}
         if (this.title === 'Assay type') {
           this.aggregation = data['assay_type'];
@@ -35,30 +37,30 @@ export class FilterComponent implements OnInit, OnDestroy {
     );
   }
 
-  onButtonClick(key: string, title: string) {
-    let data_key: string;
-    // the data_key refers to active_filters defined in service/aggregatin_service.ts
+  onButtonClick(filterVal: string, title: string) {
+    let aggField: string;
+    // the data_key refers to activeFilters defined in service/aggregatin_service.ts
     switch (title) {
       case 'Assay type': {
-        data_key = 'assay_type';
+        aggField = 'assay_type';
         break;
       }
     }
-    const index = this.aggregationService.active_filters[data_key].indexOf(key);
+    const index = this.aggregationService.activeFilters[aggField].indexOf(filterVal);
     if (index > -1) {
-      this.aggregationService.active_filters[data_key].splice(index, 1);
+      this.aggregationService.activeFilters[aggField].splice(index, 1);
     } else {
-      this.aggregationService.active_filters[data_key].push(key);
+      this.aggregationService.activeFilters[aggField].push(filterVal);
     }
 
-    const active_filter_index = this.aggregationService.current_active_filters.indexOf(key);
+    const currentActiveFilterIndex = this.aggregationService.currentActiveFilters.indexOf(filterVal);
     if (index > -1) {
-      this.aggregationService.current_active_filters.splice(active_filter_index, 1);
+      this.aggregationService.currentActiveFilters.splice(currentActiveFilterIndex, 1);
     } else {
-      this.aggregationService.current_active_filters.push(key);
+      this.aggregationService.currentActiveFilters.push(filterVal);
     }
 
-    this.aggregationService.field.next(this.aggregationService.active_filters);
+    this.aggregationService.field.next(this.aggregationService.activeFilters);
   }
 
   toggleCollapse() {
@@ -75,4 +77,3 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.subsription.unsubscribe();
   }
 }
-

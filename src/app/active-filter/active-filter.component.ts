@@ -13,17 +13,17 @@ export class ActiveFilterComponent implements OnInit {
   constructor(private aggregationService: AggregationService) { }
 
   ngOnInit() {
-    this.aggs = this.aggregationService.current_active_filters;
-    this.data = this.aggregationService.active_filters;
+    this.aggs = this.aggregationService.currentActiveFilters;
+    this.data = this.aggregationService.activeFilters;
     this.aggregationService.field.subscribe(data => {
-      this.aggs = this.aggregationService.current_active_filters;
-      this.data = this.aggregationService.active_filters;
+      this.aggs = this.aggregationService.currentActiveFilters;
+      this.data = this.aggregationService.activeFilters;
     });
   }
 
   clearFilter(field: string) {
-    const index = this.aggregationService.current_active_filters.indexOf(field);
-    this.aggregationService.current_active_filters.splice(index, 1);
+    const index = this.aggregationService.currentActiveFilters.indexOf(field);
+    this.aggregationService.currentActiveFilters.splice(index, 1);
     for (const key of Object.keys(this.data)) {
       const my_index = this.data[key].indexOf(field);
       if (my_index > -1) {
