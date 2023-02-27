@@ -14,3 +14,4 @@ COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
 #Copy default nginx configuration
 COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
 
+EXPOSE 8080
