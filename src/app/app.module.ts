@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import  {FlexLayoutModule} from "@angular/flex-layout";
 import { MaterialModule } from "./material.module";
 import {HttpClientModule} from '@angular/common/http';
-
+import {NgxSpinnerModule} from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SubmissionComponent } from './submission/submission.component';
@@ -30,7 +30,8 @@ import { ActiveFilterComponent } from './active-filter/active-filter.component';
     MaterialModule,
     HttpClientModule,
     FlexLayoutModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -37,7 +37,6 @@ export class TableServerSideComponent implements AfterViewInit {
   ngAfterViewInit() {
     // Reset back to the first page when sort order is changed
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-    console.log("this.query: ", this.query)
 
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
