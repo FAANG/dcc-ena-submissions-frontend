@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {throwError} from 'rxjs';
 import {catchError, retry, map} from 'rxjs/operators';
+import { HostSetting } from './host-setting';
 
 interface SubmissionTable {
   studyId: string;
@@ -17,9 +18,10 @@ interface SubmissionTable {
 })
 
 export class ApiDataService {
+  hostSetting = new HostSetting;
   constructor(private http: HttpClient) { }
   getAllEnaSubmissions(query: any, size: number) {
-    const url = `http://localhost:8000/data/submissions/_search/?size=${size}`;
+    const url = `${this.hostSetting.host}data/submissions/_search/?size=${size}`;
     const aggs = {
       'assay_type': 'assay_type'
     };
