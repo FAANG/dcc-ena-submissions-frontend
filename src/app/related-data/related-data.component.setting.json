@@ -1,0 +1,198 @@
+{
+  "dataset": {
+    "paper": {
+      "display": [
+        "Title",
+        "Year",
+        "Journal"
+      ],
+      "all": [
+        "Title",
+        "Year",
+        "Journal"
+      ],
+      "fields": {
+        "Title": {
+          "value": "title",
+          "link": {
+            "prefix": "../article/",
+            "url": "Article ID"
+          }
+        },
+        "Article ID": {
+          "value": "articleId"
+        },
+        "Year": {
+          "value": "year"
+        },
+        "Journal": {
+          "value": "journal"
+        }
+      }
+    },
+    "specimen": {
+      "display": [
+        "BioSamples ID",
+        "Material",
+        "Cell type",
+        "Sex",
+        "Species",
+        "Breed"
+      ],
+      "all": [
+        "BioSamples ID",
+        "Material",
+        "Cell type",
+        "Sex",
+        "Species",
+        "Breed"
+      ],
+      "fields": {
+        "BioSamples ID": {
+          "value": "biosampleId",
+          "link": {
+            "prefix": "../specimen/",
+            "url": "BioSamples ID"
+          }
+        },
+        "Material": {
+          "value": "material.text"
+        },
+        "Cell type": {
+          "value": "cellType.text"
+        },
+        "Sex": {
+          "value": "sex.text"
+        },
+        "Species": {
+          "value": "organism.text"
+        },
+        "Breed": {
+          "value": "breed.text"
+        }
+      }
+    },
+    "file": {
+      "display": [
+        "File name",
+        "Experiment",
+        "File size"
+      ],
+      "all": [
+        "File name",
+        "Experiment",
+        "Archive",
+        "File size",
+        "Checksum",
+        "Checksum method"
+      ],
+      "fields": {
+        "File name": {
+          "value": "name",
+          "link": {
+            "prefix": "../file/",
+            "url": "File ID"
+          }
+        },
+        "File ID": {
+          "value": "fileId"
+        },
+        "Experiment": {
+          "value": "experiment"
+        },
+        "Archive": {
+          "value": "archive"
+        },
+        "File size": {
+          "value": "readableSize"
+        },
+        "Checksum": {
+          "value": "checksum"
+        },
+        "Checksum method": {
+          "value": "checksumMethod"
+        }
+      }
+    },
+    "analysis": {
+      "display": [
+        "Accession",
+        "Type"
+      ],
+      "all": [
+        "Accession",
+        "Type"
+      ],
+      "fields": {
+        "Accession": {
+          "value": "_id",
+          "source": "accession",
+          "link": {
+            "prefix": "../analysis/",
+            "url": "Accession"
+          }
+        },
+        "Type": {
+          "value": "_source.analysisType",
+          "source": "analysisType"
+        }
+      }
+    }
+  },
+  "submission": {
+    "paper": {
+      "display": [
+        "Title",
+        "Year",
+        "Journal"
+      ],
+      "all": [
+        "Title",
+        "Year",
+        "Journal"
+      ],
+      "fields": {
+        "Title": {
+          "value": "title",
+          "link": {
+            "prefix": "../article/",
+            "url": "Article ID"
+          }
+        },
+        "Article ID": {
+          "value": "articleId"
+        },
+        "Year": {
+          "value": "year"
+        },
+        "Journal": {
+          "value": "journal"
+        }
+      }
+    },
+    "experiment": {
+      "display": [
+        "Accession",
+        "Alias",
+        "Available In Portal"
+      ],
+      "all": [
+        "Accession",
+        "Alias",
+        "Available In Portal"
+      ],
+      "fields": {
+        "Accession": {
+          "value": "accession",
+          "source": "experiments.accession"
+        },
+        "Alias": {
+          "value": "alias"
+        },
+        "Available In Portal": {
+          "value": "available_in_portal"
+        }
+      }
+    }
+  }
+}
