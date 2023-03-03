@@ -33,8 +33,8 @@ export class ApiDataService {
   }
 
   getAllEnaSubmissions(query: any, size: number) {
-    // const url = `${this.hostSetting.host}data/submissions/_search/?size=${size}`;
-    const url = `http://localhost:8000/data/submissions/_search/?size=${size}`;
+    const url = `${this.hostSetting.host}data/submissions/_search/?size=${size}`;
+    // const url = `http://localhost:8000/data/submissions/_search/?size=${size}`;
     const aggs = {
       'assay_type': 'assay_type'
     };
@@ -86,15 +86,15 @@ export class ApiDataService {
   }
 
   getEnaSubmission(accession: string) {
-    // let url = `${this.hostSetting.host}data/submissions/_search/?q=study_id:${accession}`;
-    let url = `http://localhost:8000/data/submissions/_search/?q=study_id:${accession}`;
+    let url = `${this.hostSetting.host}data/submissions/_search/?q=study_id:${accession}`;
+    //let url = `http://localhost:8000/data/submissions/_search/?q=study_id:${accession}`;
 
     return this.http.get<any>(url).pipe(
       retry(3),
       catchError(this.handleError),
     );
   }
-  
+
 
   getSubmissionExperiments(studyId: string, sort: string, offset: number, search: string) {
     const res = {};
@@ -102,8 +102,8 @@ export class ApiDataService {
       study_id: [studyId]
     });
     console.log("sort: ", sort)
-    // let url = `${this.hostSetting.host}data/submissions/_search/?size=10&filters=${submission_filter}&sort=${sort}&from_=${offset}&search=${search}`;
-    let url = `http://localhost:8000/data/submissions/_search/?size=10&_source=experiments.accession,experiments.alias,available_in_portal&filters=${submission_filter}&sort=${sort}&from_=${offset}&search=${search}`;
+    let url = `${this.hostSetting.host}data/submissions/_search/?size=10&_source=experiments.accession,experiments.alias,available_in_portal&filters=${submission_filter}&sort=${sort}&from_=${offset}&search=${search}`;
+    // let url = `http://localhost:8000/data/submissions/_search/?size=10&_source=experiments.accession,experiments.alias,available_in_portal&filters=${submission_filter}&sort=${sort}&from_=${offset}&search=${search}`;
     console.log(url)
 
     return this.http.get(url).pipe(
