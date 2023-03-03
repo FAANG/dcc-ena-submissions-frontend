@@ -5,6 +5,7 @@ import { MaterialModule } from "./material.module";
 import {HttpClientModule} from '@angular/common/http';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
+import {FormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -13,6 +14,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableServerSideComponent } from './table-server-side/table-server-side.component';
 import { FilterComponent } from './filter/filter.component';
 import { ActiveFilterComponent } from './active-filter/active-filter.component';
+import { SubmissionDetailComponent } from './submission/submission-detail/submission-detail.component';
+import { RelatedDataComponent } from './related-data/related-data.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,9 @@ import { ActiveFilterComponent } from './active-filter/active-filter.component';
     HeaderComponent,
     TableServerSideComponent,
     FilterComponent,
-    ActiveFilterComponent
+    ActiveFilterComponent,
+    SubmissionDetailComponent,
+    RelatedDataComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +37,7 @@ import { ActiveFilterComponent } from './active-filter/active-filter.component';
     FlexLayoutModule,
     BrowserAnimationsModule,
     NgxSpinnerModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

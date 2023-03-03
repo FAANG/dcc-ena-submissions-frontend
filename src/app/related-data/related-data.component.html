@@ -1,0 +1,53 @@
+<div [ngStyle]="{'display': data.length > 0 ? 'block' : 'none'}" style="width: 100%; overflow-x: scroll;">
+  <hr>
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between center">
+    <h3>Submitted {{dataType|titlecase}}</h3>
+  </div>
+
+  <div class="table-responsive">
+    <mat-form-field style="width: 98%;">
+      <mat-label>Search</mat-label>
+      <input (keyup)="searchChanged($event)" matInput
+             placeholder="Search">
+    </mat-form-field>
+    <div>
+      <table mat-table matSort matSortDisableClear
+             [dataSource]="dataSource.data.length > 0 ? dataSource : emptyData"
+             table-striped style="width: 100%">
+        <ng-container [matColumnDef]=col *ngFor="let col of displayedColumns; let i = index">
+          <ng-container>
+            <th mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header>
+              {{col.split('_').join(' ')|titlecase}}
+            </th>
+            <td mat-cell class="table-cell-data" *matCellDef="let item">
+              <ng-container *ngIf="col === 'available_in_portal'; else plainText">
+                <ng-template *ngTemplateOutlet="availableTemplate; context: { $implicit: item }">
+                </ng-template>
+              </ng-container>
+              <ng-template #plainText>
+                {{item[col]}}
+              </ng-template>
+            </td>
+          </ng-container>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator
+        [pageSize]=10
+      ></mat-paginator>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #availableTemplate let-item>
+  <td *ngIf="isAvailable(item['available_in_portal'])" [ngClass]="availableClass(item['available_in_portal'])">
+    <i class="material-icons">check_circle</i>
+  </td>
+  <td *ngIf="!isAvailable(item['available_in_portal'])" [ngClass]="availableClass(item['available_in_portal'])">
+    <i class="material-icons">highlight_off</i>
+  </td>
+</ng-template>
+
+

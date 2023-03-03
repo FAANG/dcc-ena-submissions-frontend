@@ -1,0 +1,44 @@
+<div *ngIf="submission">
+  <h2>{{submission.study_id}}</h2>
+  <hr>
+  <div fxLayout="column" fxLayoutGap="3%">
+    <div fxLayout="row">
+      <div fxFlex="40">Study Name:</div>
+      <div>
+        <a [href]="ena_prefix + submission?.study_id" target="_blank">{{submission?.study_id}}</a>
+      </div>
+    </div>
+    <div fxLayout="row">
+      <div fxFlex="40">Alias:</div>
+      <div>{{submission?.study_alias}}</div>
+    </div>
+    <div fxLayout="row">
+      <div fxFlex="40">Assay Type:</div>
+      <div>{{submission?.assay_type}}</div>
+    </div>
+  </div>
+  <div *ngIf="displayTable" class="related-data">
+    <app-related-data dataType="experiments"
+                      [data]="submittedExperiments"
+                      [displayedColumns]="displayedColumns">
+    </app-related-data>
+
+    <app-related-data dataType="runs"
+                      [data]="submittedRuns"
+                      [displayedColumns]="displayedColumns">
+    </app-related-data>
+
+    <app-related-data dataType="analyses"
+                      [data]="submittedAnalyses"
+                      [displayedColumns]="displayedColumns">
+    </app-related-data>
+  </div>
+</div>
+
+<div class="alert alert-danger" *ngIf="error"><p>{{ error }}</p></div>
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+table {
+  font-size: 14px;
+  width: 100%;
+}
+
+input {
+  margin-left: 5px;
+}
+
+a {
+  color: steelblue;
+}
+
+.table-header {
+  background-color: rgba(0, 0, 0, 0.07);
+  font-size: 14px;
+  color: black;
+  font-weight: 600;
+}
+
+.table-cell-data {
+  padding-right: 12px !important;
+}
+
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type,
+th.mat-header-cell:first-of-type {
+  padding-left: 10px;
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding: 20px 20px 20px 0;
+}
+
+.available {
+  color: green;
+  text-align: center;
+  width: 100px;
+}
+
+.notAvailable {
+  text-align: center;
+  width: 100px;
+  color: #C41E3A;
+}
+
+h3{
+  color: #6f6f71;
+}
+
+

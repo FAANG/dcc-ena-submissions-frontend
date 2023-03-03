@@ -1,0 +1,72 @@
+{
+  "submission": {
+    "paper": {
+      "display": [
+        "Title",
+        "Year",
+        "Journal"
+      ],
+      "all": [
+        "Title",
+        "Year",
+        "Journal"
+      ],
+      "fields": {
+        "Title": {
+          "value": "title",
+          "link": {
+            "prefix": "../article/",
+            "url": "Article ID"
+          }
+        },
+        "Article ID": {
+          "value": "articleId"
+        },
+        "Year": {
+          "value": "year"
+        },
+        "Journal": {
+          "value": "journal"
+        }
+      }
+    },
+    "experiment": {
+      "display": [
+        "Accession",
+        "Alias",
+        "Available In Portal"
+      ],
+      "fields": {
+        "Accession": {
+          "value": "accession",
+          "source": "experiments.accession"
+        },
+        "Alias": {
+          "value": "alias"
+        },
+        "Available In Portal": {
+          "value": "available_in_portal"
+        }
+      }
+    },
+    "run": {
+      "display": [
+        "Accession",
+        "Alias",
+        "Available In Portal"
+      ],
+      "fields": {
+        "Accession": {
+          "value": "accession",
+          "source": "runs.accession"
+        },
+        "Alias": {
+          "value": "alias"
+        },
+        "Available In Portal": {
+          "value": "available_in_portal"
+        }
+      }
+    }
+  }
+}
