@@ -14,3 +14,9 @@ td.mat-footer-cell:first-of-type,
 th.mat-header-cell:first-of-type {
   padding-left: 10px;
 }
+
+a {
+  color: steelblue;
+}
+
+
