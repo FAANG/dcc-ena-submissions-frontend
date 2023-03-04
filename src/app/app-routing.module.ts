@@ -5,7 +5,7 @@ import {SubmissionDetailComponent} from './submission/submission-detail/submissi
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 
 const routes: Routes = [
-  {path: '', component: SubmissionComponent},
+  {path: '', redirectTo: 'submissions', pathMatch: 'full'},
   {path: 'submissions', component: SubmissionComponent},
   {path: 'submissions/:id', component: SubmissionDetailComponent},
   {path: '404', component: PageNotFoundComponent},
