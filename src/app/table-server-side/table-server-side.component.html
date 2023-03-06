@@ -7,11 +7,19 @@
   <ng-container [matColumnDef]=col *ngFor="let col of display_fields; let i = index">
     <th mat-header-cell class="table-header" *matHeaderCellDef mat-sort-header> {{column_names[i]}} </th>
     <td mat-cell *matCellDef="let item" class="table-cell-data" style="padding-right: 5px; max-width: 150px">
-      <ng-container *ngIf="column_names[i] === 'Study Id'; else noColLink">
+
+      <ng-container *ngIf="col === 'studyId'; else noColLink">
         <a style="cursor: pointer" target="_blank" [routerLink]="item[col]">{{item[col]}}</a>
       </ng-container>
+
       <ng-template #noColLink>
-        {{item[col]}}
+        <ng-container *ngIf="col === 'availableInPortal'; else plainText">
+          <ng-template *ngTemplateOutlet="availableTemplate; context: { $implicit: item }">
+          </ng-template>
+        </ng-container>
+        <ng-template #plainText>
+          {{item[col]}}
+        </ng-template>
       </ng-template>
     </td>
 
@@ -20,3 +28,13 @@
   <tr mat-row *matRowDef="let row; columns: display_fields;"></tr>
 </table>
 <mat-paginator pageSize="25" [length]="totalHits"></mat-paginator>
+
+
+<ng-template #availableTemplate let-item>
+  <td *ngIf="isAvailable(item['available_in_portal'])" [ngClass]="availableClass(item['available_in_portal'])">
+    <i class="material-icons">check_circle</i>
+  </td>
+  <td *ngIf="!isAvailable(item['available_in_portal'])" [ngClass]="availableClass(item['available_in_portal'])">
+    <i class="material-icons">highlight_off</i>
+  </td>
+</ng-template>

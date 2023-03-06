@@ -44,7 +44,8 @@ export class ApiDataService {
       'assayType': 'assay_type',
       'numberOfExperiments': 'experiments',
       'numberOfRuns': 'runs',
-      'numberOfFiles': 'files'
+      'numberOfFiles': 'files',
+      'availableInPortal': 'available_in_portal'
     };
     const filters = query['filters'];
     for (const prop of Object.keys(filters)) {
@@ -72,7 +73,8 @@ export class ApiDataService {
             numberOfExperiments: entry['_source']['experiments'] ? entry['_source']['experiments']['length'] : 0,
             numberOfRuns: entry['_source']['runs'] ? entry['_source']['runs']['length'] : 0,
             numberOfFiles: entry['_source']['files'] ? entry['_source']['files']['length'] : 0,
-            numberOfAnalyses: entry['_source']['analyses'] ? entry['_source']['analyses']['length'] : 0
+            numberOfAnalyses: entry['_source']['analyses'] ? entry['_source']['analyses']['length'] : 0,
+            availableInPortal: entry['_source']['available_in_portal']
           } as SubmissionTable)
         );
         console.log(data.hits.hits);
@@ -93,38 +95,6 @@ export class ApiDataService {
       retry(3),
       catchError(this.handleError),
     );
-  }
-
-
-  getSubmissionExperiments(studyId: string, sort: string, offset: number, search: string) {
-    const res = {};
-    const submission_filter = JSON.stringify({
-      study_id: [studyId]
-    });
-    console.log("sort: ", sort)
-    let url = `${this.hostSetting.host}data/submissions/_search/?size=10&_source=experiments.accession,experiments.alias,available_in_portal&filters=${submission_filter}&sort=${sort}&from_=${offset}&search=${search}`;
-    // let url = `http://localhost:8000/data/submissions/_search/?size=10&_source=experiments.accession,experiments.alias,available_in_portal&filters=${submission_filter}&sort=${sort}&from_=${offset}&search=${search}`;
-    console.log(url)
-
-    return this.http.get(url).pipe(
-      map((data: any) => {
-        res['data'] = data.hits.hits.map(entry => ({
-          accession: entry['_source']['study_id'],
-          alias: entry['_source']['study_alias'],
-          available_in_portal: entry['_source']['available_in_portal'],
-          experiments: entry['_source']['experiments']
-          // numberOfRuns: entry['_source']['runs'] ? entry['_source']['runs']['length'] : 0,
-          // numberOfFiles: entry['_source']['files'] ? entry['_source']['files']['length'] : 0,
-          // numberOfAnalyses: entry['_source']['analyses'] ? entry['_source']['analyses']['length'] : 0
-          })
-        );
-        res['totalHits'] = data.hits.total.value;
-        return res;
-      }),
-      retry(3),
-      catchError(this.handleError),
-    );
-
   }
 
   private handleError(error: HttpErrorResponse) {

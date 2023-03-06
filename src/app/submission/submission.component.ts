@@ -16,8 +16,8 @@ import {TableServerSideComponent} from "../table-server-side/table-server-side.c
 export class SubmissionComponent implements OnInit, OnDestroy {
   @ViewChild(TableServerSideComponent, { static: true }) tableServerComponent: TableServerSideComponent;
   public loadTableDataFunction: Function;
-  displayFields: string[] = ['studyId', 'studyAlias', 'assayType', 'numberOfExperiments', 'numberOfRuns', 'numberOfFiles', 'numberOfAnalyses'];
-  columnNames: string[] = ['Study Id', 'Study Alias', 'Assay Type', 'Number of Experiments',  'Number of runs', 'Number of Files', 'Number of Analyses'];
+  displayFields: string[] = ['studyId', 'studyAlias', 'assayType', 'numberOfExperiments', 'numberOfRuns', 'numberOfFiles', 'numberOfAnalyses', 'availableInPortal'];
+  columnNames: string[] = ['Study Id', 'Study Alias', 'Assay Type', 'Number of Experiments',  'Number of runs', 'Number of Files', 'Number of Analyses', 'Available In Portal'];
   filter_field: {};
   templates: Object;
   aggrSubscription: Subscription;
@@ -32,7 +32,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       'experiments.accession',
       'runs.accession',
       'files.name',
-      'analyses.accession'],
+      'analyses.accession',
+      'available_in_portal'],
     'search': ''
   };
 

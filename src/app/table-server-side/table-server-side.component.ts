@@ -1,4 +1,4 @@
-import {Component, Input, Output, AfterViewInit, ViewChild, EventEmitter} from '@angular/core';
+import {Component, Input, Output, AfterViewInit, ViewChild, EventEmitter, TemplateRef} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -26,6 +26,7 @@ export class TableServerSideComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('availableTemplate', { static: true }) availableTemplate: TemplateRef<any>;
 
   dataSource = new MatTableDataSource();
   totalHits = 0;
@@ -109,6 +110,14 @@ export class TableServerSideComponent implements AfterViewInit {
       this.totalHits = res.totalHits; // set length of paginator
       this.spinner.hide();
     });
+  }
+
+  isAvailable(available: any) {
+    return available === 'true';
+  }
+
+  availableClass(available: any) {
+    return available === 'true' ? 'available' : 'notAvailable';
   }
 
 }
