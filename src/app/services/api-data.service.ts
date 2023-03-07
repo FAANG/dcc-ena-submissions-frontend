@@ -33,8 +33,8 @@ export class ApiDataService {
   }
 
   getAllEnaSubmissions(query: any, size: number) {
-    const url = `${this.hostSetting.host}data/submissions/_search/?size=${size}`;
-    // const url = `http://localhost:8000/data/submissions/_search/?size=${size}`;
+    // const url = `${this.hostSetting.host}data/submissions/_search/?size=${size}`;
+    const url = `http://localhost:8000/data/submissions_test/_search/?size=${size}`;
     const aggs = {
       'assay_type': 'assay_type'
     };
@@ -45,7 +45,9 @@ export class ApiDataService {
       'numberOfExperiments': 'experiments',
       'numberOfRuns': 'runs',
       'numberOfFiles': 'files',
-      'availableInPortal': 'available_in_portal'
+      'numberOfAnalyses': 'analyses',
+      'availableInPortal': 'available_in_portal',
+      'submissionDate': 'submission_date'
     };
     const filters = query['filters'];
     for (const prop of Object.keys(filters)) {
@@ -58,7 +60,10 @@ export class ApiDataService {
       'sort'][1];
     let params = new HttpParams().set('_source', query['_source'].toString()).set('filters', JSON.stringify(filters)).set('aggs',
       JSON.stringify(aggs)).set('from_', query['from_']).set('search', query['search']);
-    if (query['sort'][0] === 'numberOfExperiments' || query['sort'][0] === 'numberOfSpecimens' || query['sort'][0] === 'numberOfFiles') {
+    if (query['sort'][0] === 'numberOfExperiments' ||
+        query['sort'][0] === 'numberOfRunss' ||
+        query['sort'][0] === 'numberOfFiles' ||
+        query['sort'][0] === 'numberOfAnalyses') {
       params = params.set('sort_by_count', sortParams);
     } else {
       params = params.set('sort', sortParams);
@@ -74,7 +79,8 @@ export class ApiDataService {
             numberOfRuns: entry['_source']['runs'] ? entry['_source']['runs']['length'] : 0,
             numberOfFiles: entry['_source']['files'] ? entry['_source']['files']['length'] : 0,
             numberOfAnalyses: entry['_source']['analyses'] ? entry['_source']['analyses']['length'] : 0,
-            availableInPortal: entry['_source']['available_in_portal']
+            availableInPortal: entry['_source']['available_in_portal'],
+            submissionDate: entry['_source']['submission_date']
           } as SubmissionTable)
         );
         console.log(data.hits.hits);
@@ -88,13 +94,19 @@ export class ApiDataService {
   }
 
   getEnaSubmission(accession: string) {
-    let url = `${this.hostSetting.host}data/submissions/_search/?q=study_id:${accession}`;
-    //let url = `http://localhost:8000/data/submissions/_search/?q=study_id:${accession}`;
+    // const url = `${this.hostSetting.host}data/submissions/_search/?q=study_id:${accession}`;
+    const url = `http://localhost:8000/data/submissions_test/_search/?q=study_id:${accession}`;
 
     return this.http.get<any>(url).pipe(
       retry(3),
       catchError(this.handleError),
     );
+  }
+
+
+  subscribeUser(studyId, subscriberEmail) {
+    const url =  'http://localhost:8000/submission/submission_subscribe/' + studyId + '/' + subscriberEmail;
+    return this.http.get(url);
   }
 
   private handleError(error: HttpErrorResponse) {

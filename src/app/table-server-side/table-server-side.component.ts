@@ -5,6 +5,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import {Observable, merge, of as observableOf} from 'rxjs';
 import {map, startWith, switchMap, catchError} from 'rxjs/operators';
 import {NgxSpinnerService} from 'ngx-spinner';
+import {MatDialog} from '@angular/material/dialog';
+import {ApiDataService} from '../services/api-data.service';
 
 
 @Component({
@@ -27,12 +29,24 @@ export class TableServerSideComponent implements AfterViewInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('availableTemplate', { static: true }) availableTemplate: TemplateRef<any>;
+  @ViewChild('subscribeDialog') subscribeDialog: TemplateRef<any>;
 
   dataSource = new MatTableDataSource();
   totalHits = 0;
   timer: any;
+  subscriber = { email: '', studyId: '' };
+  socket;
+  submission_message: string;
 
-  constructor(private spinner: NgxSpinnerService,) {
+
+  dialogRef: any;
+
+  @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
+
+
+  constructor(private spinner: NgxSpinnerService,
+              public dialog: MatDialog,
+              private dataService: ApiDataService,) {
   }
 
   ngAfterViewInit() {
@@ -67,6 +81,7 @@ export class TableServerSideComponent implements AfterViewInit {
       this.totalHits = res.totalHits;
       this.spinner.hide();
     });
+    this.setSocket();
   }
 
   // apply filter when component input "filter_values" is changed
@@ -119,5 +134,57 @@ export class TableServerSideComponent implements AfterViewInit {
   availableClass(available: any) {
     return available === 'true' ? 'available' : 'notAvailable';
   }
+
+  subscribe(studyId: any){
+    this.dialog.open(this.subscribeDialog);
+  }
+
+
+
+
+  openSubscriptionDialog(studyId: string) {
+    this.subscriber.studyId = studyId;
+    this.dialogRef = this.dialog.open(this.subscriptionTemplate,
+      { data: this.subscriber, height: '260px', width: '350px' });
+
+    this.dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result?.email + "--->" + studyId);
+
+      this.dataService.subscribeUser(studyId, result.email).subscribe(response => {
+          console.log("You have now been subscribed!")
+        },
+        error => {
+          console.log(error);
+        }
+      );
+
+
+    });
+  }
+  onCancelCityDialog() {
+    this.dialogRef.close();
+  }
+
+  setSocket() {
+    const url = 'ws://127.0.0.1:8000/ws/submission/enaSubmissions/';
+    console.log(url)
+    this.socket = new WebSocket(url);
+    this.socket.onopen = () => {
+      console.log('WebSockets connection created.');
+    };
+    this.socket.onmessage = (event) => {
+      const data = JSON.parse(event.data)['response'];
+
+      if (data['submission_message']) {
+        this.submission_message = data['submission_message'];
+      }
+
+    };
+
+    if (this.socket.readyState === WebSocket.OPEN) {
+      this.socket.onopen(null);
+    }
+  }
+
 
 }
