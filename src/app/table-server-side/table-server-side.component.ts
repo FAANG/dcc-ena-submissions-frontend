@@ -148,17 +148,16 @@ export class TableServerSideComponent implements AfterViewInit {
       { data: this.subscriber, height: '260px', width: '350px' });
 
     this.dialogRef.afterClosed().subscribe((result: any) => {
-      console.log(result?.email + "--->" + studyId);
-
-      this.dataService.subscribeUser(studyId, result.email).subscribe(response => {
-          console.log("You have now been subscribed!")
-        },
-        error => {
-          console.log(error);
-        }
-      );
-
-
+      if (result) {
+        console.log(result?.email + "--->" + studyId);
+        this.dataService.subscribeUser(studyId, result.email).subscribe(response => {
+            console.log("You have now been subscribed!")
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
     });
   }
   onCancelCityDialog() {
