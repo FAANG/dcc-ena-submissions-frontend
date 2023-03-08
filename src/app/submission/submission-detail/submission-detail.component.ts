@@ -31,7 +31,7 @@ export class SubmissionDetailComponent implements OnInit {
       this.studyId = params['id'];
       this.titleService.setTitle(`${this.studyId} | ENA Submission`);
     });
-    this.displayedColumns = ['accession', 'alias', 'available_in_portal'];
+    this.displayedColumns = ['accession', 'alias', 'submission_date', 'available_in_portal'];
     this.dataService.getEnaSubmission(this.studyId).subscribe(
       (data: any) => {
         if (data['hits']['hits'].length === 0) {
@@ -41,20 +41,29 @@ export class SubmissionDetailComponent implements OnInit {
           if (data['hits']['hits'].length > 0) {
             this.submission = data['hits']['hits'][0]['_source'];
             const availableInPortal = data['hits']['hits'][0]['_source']['available_in_portal'] || 'false'
+            const submissionDate = data['hits']['hits'][0]['_source']['submission_date']
             const relatedExperiments = data['hits']['hits'][0]['_source']['experiments'] || [];
             const relatedRuns = data['hits']['hits'][0]['_source']['runs'] || [];
             const relatedAnalyses = data['hits']['hits'][0]['_source']['analyses'] || [];
 
             if (relatedExperiments.length > 0){
-              relatedExperiments.map(obj => Object.assign(obj, {available_in_portal: availableInPortal}));
+              relatedExperiments.map(obj => Object.assign(obj, {
+                available_in_portal: availableInPortal,
+                submission_date: submissionDate
+              }));
               this.submittedExperiments.push(...relatedExperiments);
             }
             if (relatedRuns.length > 0){
-              relatedRuns.map(obj => Object.assign(obj, {available_in_portal: availableInPortal}));
+              relatedRuns.map(obj => Object.assign(obj, {
+                available_in_portal: availableInPortal,
+                submission_date: submissionDate
+              }));
               this.submittedRuns.push(...relatedRuns);
             }
             if (relatedAnalyses.length > 0){
-              relatedAnalyses.map(obj => Object.assign(obj, {available_in_portal: availableInPortal}));
+              relatedAnalyses.map(obj => Object.assign(obj, {
+                available_in_portal: availableInPortal,
+                submission_date: submissionDate}));
               this.submittedAnalyses.push(...relatedAnalyses);
             }
 
