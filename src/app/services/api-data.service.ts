@@ -33,7 +33,7 @@ export class ApiDataService {
   }
 
   getAllEnaSubmissions(query: any, size: number) {
-    const url = `${this.hostSetting.host}data/submissions_test/_search/?size=${size}`;
+    const url = `${this.hostSetting.host}data/submissions/_search/?size=${size}`;
     // const url = `http://localhost:8000/data/submissions_test/_search/?size=${size}`;
     const aggs = {
       'assay_type': 'assay_type'
@@ -94,7 +94,7 @@ export class ApiDataService {
   }
 
   getEnaSubmission(accession: string) {
-    const url = `${this.hostSetting.host}data/submissions_test/_search/?q=study_id:${accession}`;
+    const url = `${this.hostSetting.host}data/submissions/_search/?q=study_id:${accession}`;
     // const url = `http://localhost:8000/data/submissions_test/_search/?q=study_id:${accession}`;
 
     return this.http.get<any>(url).pipe(
