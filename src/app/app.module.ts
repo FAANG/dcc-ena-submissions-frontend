@@ -16,6 +16,7 @@ import { FilterComponent } from './filter/filter.component';
 import { ActiveFilterComponent } from './active-filter/active-filter.component';
 import { SubmissionDetailComponent } from './submission/submission-detail/submission-detail.component';
 import { RelatedDataComponent } from './related-data/related-data.component';
+import { UnsubscribeComponent } from './submission/unsubscribe/unsubscribe.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { RelatedDataComponent } from './related-data/related-data.component';
     FilterComponent,
     ActiveFilterComponent,
     SubmissionDetailComponent,
-    RelatedDataComponent
+    RelatedDataComponent,
+    UnsubscribeComponent
   ],
   imports: [
     BrowserModule,
