@@ -1,1 +1,12 @@
-<p>unsubscribe works!</p>
+<h3 mat-dialog-title>Please confirm that you want to unsubscribe from Study {{studyId}}</h3>
+<div mat-dialog-content class="centerContents">
+  <p>
+    <mat-form-field appearance="fill" [style.width.%]="100">
+      <input matInput [(ngModel)]="email" placeholder="Enter email" readonly="true">
+    </mat-form-field>
+  </p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancelUnsubscribe()">Cancel</button>
+  <button mat-button (click)="unsubscribeEmail(email)">Ok</button>
+</div>

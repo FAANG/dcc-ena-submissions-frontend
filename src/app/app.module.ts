@@ -6,6 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
 import {FormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -40,6 +41,7 @@ import { UnsubscribeComponent } from './submission/unsubscribe/unsubscribe.compo
     BrowserAnimationsModule,
     NgxSpinnerModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

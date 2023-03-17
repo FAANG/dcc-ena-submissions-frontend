@@ -5,6 +5,8 @@ import {Observable, Subscription} from 'rxjs';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {TableServerSideComponent} from "../table-server-side/table-server-side.component";
+import {MatDialog} from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-submission',
@@ -24,6 +26,10 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   templates: Object;
   aggrSubscription: Subscription;
   data = {};
+  subscriber = { email: '', assayType: '' };
+  dialogRef: any;
+  public subscriptionForm: FormGroup;
+  @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
 
   query = {
     'sort': ['study_id','desc'],
@@ -42,11 +48,13 @@ export class SubmissionComponent implements OnInit, OnDestroy {
 
   defaultSort = ['study_id','desc'];
   error: string;
+  aggs = [];
 
   constructor(private dataService: ApiDataService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private aggregationService: AggregationService,
+              public dialog: MatDialog,
               private titleService: Title) { }
 
   ngOnInit() {
@@ -89,6 +97,11 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['submissions'], {queryParams: params});
     });
+    this.aggs = this.aggregationService.currentActiveFilters;
+
+    this.subscriptionForm = new FormGroup({
+      subscriberEmail: new FormControl('', [Validators.required, Validators.email]),
+    });
   }
 
   hasActiveFilters() {
@@ -121,5 +134,35 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       this.resetFilter();
     }
     this.aggrSubscription.unsubscribe();
+  }
+
+  openSubscriptionDialog(studyId: string) {
+    this.subscriber.assayType = studyId;
+    this.dialogRef = this.dialog.open(this.subscriptionTemplate,
+      { data: this.subscriber, height: '260px', width: '350px' });
+  }
+
+  public displayError = (controlName: string, errorName: string) =>{
+    return this.subscriptionForm.controls[controlName].hasError(errorName);
+  }
+
+  onCancelDialog() {
+    this.dialogRef.close();
+  }
+
+  onRegister(result) {
+    console.log("this.subscriptionForm.errors: ", this.subscriptionForm.valid, this.subscriptionForm.touched)
+    console.log(result)
+    if (this.subscriptionForm.valid && this.subscriptionForm.touched){
+      this.dataService.subscribeUser(result.assayType, 'assay_type', result.email).subscribe(response => {
+          console.log("You have now been subscribed!")
+          this.dialogRef.close();
+        },
+        error => {
+          console.log(error);
+          this.dialogRef.close();
+        }
+      );
+    }
   }
 }

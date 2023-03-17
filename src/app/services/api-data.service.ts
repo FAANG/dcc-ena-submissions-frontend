@@ -33,8 +33,8 @@ export class ApiDataService {
   }
 
   getAllEnaSubmissions(query: any, size: number) {
-    // const url = `${this.hostSetting.host}data/submissions_test/_search/?size=${size}`;
-    const url = `http://localhost:8000/data/submissions_test/_search/?size=${size}`;
+    const url = `${this.hostSetting.host}data/submissions_test/_search/?size=${size}`;
+    // const url = `http://localhost:8000/data/submissions_test/_search/?size=${size}`;
     const aggs = {
       'assay_type': 'assay_type'
     };
@@ -94,8 +94,8 @@ export class ApiDataService {
   }
 
   getEnaSubmission(accession: string) {
-    // const url = `${this.hostSetting.host}data/submissions_test/_search/?q=study_id:${accession}`;
-    const url = `http://localhost:8000/data/submissions_test/_search/?q=study_id:${accession}`;
+    const url = `${this.hostSetting.host}data/submissions_test/_search/?q=study_id:${accession}`;
+    // const url = `http://localhost:8000/data/submissions_test/_search/?q=study_id:${accession}`;
 
     return this.http.get<any>(url).pipe(
       retry(3),
@@ -104,9 +104,16 @@ export class ApiDataService {
   }
 
 
-  subscribeUser(studyId, subscriberEmail) {
-    // const url =  `${this.hostSetting.host}submission/submission_subscribe/` + studyId + '/' + subscriberEmail;
-    const url =  'http://localhost:8000/submission/submission_subscribe/' + studyId + '/' + subscriberEmail;
+  subscribeUser(subscriptionId, subscriptionType, subscriberEmail) {
+    const url =  `${this.hostSetting.host}submission/submission_subscribe/${subscriptionId}/${subscriptionType}/${subscriberEmail}`;
+    // const url =  `http://localhost:8000/submission/submission_subscribe/${subscriptionId}/${subscriptionType}/${subscriberEmail}`;
+    return this.http.get(url);
+  }
+
+
+  unsubscribeUser(studyId, subscriberEmail) {
+    const url =  '${this.hostSetting.host}submission/submission_unsubscribe/' + studyId + '/' + subscriberEmail;
+    // const url =  'http://localhost:8000/submission/submission_unsubscribe/' + studyId + '/' + subscriberEmail;
     return this.http.get(url);
   }
 

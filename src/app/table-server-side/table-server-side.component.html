@@ -40,7 +40,7 @@
 <mat-paginator pageSize="25" [length]="totalHits"></mat-paginator>
 
 
-<div fxLayout="row" class="alert alert-success" *ngIf="submission_message">
+<div fxLayout="row" [ngClass]="subscription_status == 'success' ? 'alert alert-success' : 'alert alert-warning'" *ngIf="submission_message">
   <div fxFlex="100">
     {{submission_message}}
   </div>
@@ -57,17 +57,27 @@
 
 
 <ng-template let-data #subscriptionTemplate>
-  <h3 mat-dialog-title>Subscribing to Study Id {{data.studyId}}</h3>
+  <h3 mat-dialog-title>Subscribing to Study Id '{{data.studyId}}'</h3>
   <div mat-dialog-content class="centerContents">
+    <form [formGroup]="subscriptionForm" novalidate>
     <p>
       <mat-form-field appearance="fill" [style.width.%]="100">
-        <input matInput [(ngModel)]="data.email" placeholder="Enter email">
+        <input matInput [(ngModel)]="data.email" placeholder="Enter email" formControlName="subscriberEmail" id="subscriberEmail">
+        <mat-hint align="end">Enter a valid email address.</mat-hint>
+        <mat-error *ngIf="displayError('subscriberEmail', 'required')">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="displayError('subscriberEmail', 'email')">
+          Please enter a valid email
+        </mat-error>
       </mat-form-field>
     </p>
+    </form>
   </div>
   <div mat-dialog-actions>
-    <button mat-button (click)="onCancelCityDialog()">Cancel</button>
-    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="onCancelDialog()">Cancel</button>
+    <button mat-button (click)="onRegister(data)" cdkFocusInitial>Register</button>
+
   </div>
 </ng-template>
 
