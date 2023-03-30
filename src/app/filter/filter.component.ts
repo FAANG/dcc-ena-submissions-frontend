@@ -32,6 +32,9 @@ export class FilterComponent implements OnInit, OnDestroy {
         if (this.title === 'Assay type') {
           this.aggregation = data['assay_type'];
         }
+        else if (this.title === 'Secondary project') {
+          this.aggregation = data['secondary_project'];
+        }
         this.cdRef.detectChanges();
       }
     );
@@ -43,6 +46,10 @@ export class FilterComponent implements OnInit, OnDestroy {
     switch (title) {
       case 'Assay type': {
         aggField = 'assay_type';
+        break;
+      }
+      case 'Secondary project': {
+        aggField = 'secondary_project';
         break;
       }
     }

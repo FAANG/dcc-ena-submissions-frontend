@@ -17,9 +17,9 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   @ViewChild(TableServerSideComponent, { static: true }) tableServerComponent: TableServerSideComponent;
   public loadTableDataFunction: Function;
   displayFields: string[] = ['studyId', 'studyAlias', 'assayType', 'numberOfExperiments', 'numberOfRuns',
-    'numberOfFiles', 'numberOfAnalyses', 'availableInPortal', 'submissionDate', 'subscribe'];
+    'numberOfFiles', 'numberOfAnalyses', 'secondaryProject', 'availableInPortal', 'submissionDate', 'subscribe'];
   columnNames: string[] = ['Study Id', 'Study Alias', 'Assay Type', 'Number of Experiments',  'Number of runs',
-    'Number of Files', 'Number of Analyses', 'Available In Portal', 'Submission Date', 'Subscribe'];
+    'Number of Files', 'Number of Analyses', 'Project', 'Available In Portal', 'Submission Date', 'Subscribe'];
   filter_field: {};
   templates: Object;
   aggrSubscription: Subscription;
@@ -36,7 +36,9 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       'files.name',
       'analyses.accession',
       'available_in_portal',
-      'submission_date'],
+      'submission_date',
+      'secondary_project'
+    ],
     'search': ''
   };
 
