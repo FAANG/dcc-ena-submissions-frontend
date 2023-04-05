@@ -11,7 +11,6 @@ import {NgxSpinnerService} from 'ngx-spinner';
 })
 export class SubmissionDetailComponent implements OnInit {
   submittedExperiments: Array<any> = [];
-  submittedRuns: Array<any> = [];
   submittedAnalyses: Array<any> = [];
   studyId: string;
   error: any;
@@ -48,21 +47,12 @@ export class SubmissionDetailComponent implements OnInit {
 
             if (relatedExperiments.length > 0){
               relatedExperiments.map(obj => Object.assign(obj, {
-                available_in_portal: availableInPortal,
                 submission_date: submissionDate
               }));
               this.submittedExperiments.push(...relatedExperiments);
             }
-            if (relatedRuns.length > 0){
-              relatedRuns.map(obj => Object.assign(obj, {
-                available_in_portal: availableInPortal,
-                submission_date: submissionDate
-              }));
-              this.submittedRuns.push(...relatedRuns);
-            }
             if (relatedAnalyses.length > 0){
               relatedAnalyses.map(obj => Object.assign(obj, {
-                available_in_portal: availableInPortal,
                 submission_date: submissionDate}));
               this.submittedAnalyses.push(...relatedAnalyses);
             }

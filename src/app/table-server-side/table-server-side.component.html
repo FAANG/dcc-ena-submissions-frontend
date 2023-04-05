@@ -26,7 +26,14 @@
           </div>
         </ng-container>
 
-        <ng-container *ngIf="col !== 'availableInPortal' && col !== 'subscribe'">
+        <ng-container *ngIf="col === 'studyAlias'">
+          <span *ngIf="(item[col] + '').length > 20" [matTooltip]="item[col]">
+            {{truncate(item[col], 20, true)}}
+          </span>
+          <span *ngIf="(item[col] + '').length < 20"> {{item[col]}}</span>
+        </ng-container>
+
+        <ng-container *ngIf="col !== 'availableInPortal' && col !== 'subscribe' && col !== 'studyAlias'">
           {{item[col]}}
         </ng-container>
 
