@@ -33,10 +33,11 @@ export class ApiDataService {
   }
 
   getAllEnaSubmissions(query: any, size: number) {
-    const url = `${this.hostSetting.host}data/submissions_test/_search/?size=${size}`;
-    // const url = `http://localhost:8000/data/submissions_test/_search/?size=${size}`;
+    // const url = `${this.hostSetting.host}data/submissions_test/_search/?size=${size}`;
+    const url = `http://localhost:8000/data/submissions_test/_search/?size=${size}`;
     const aggs = {
-      'assay_type': 'assay_type'
+      'assay_type': 'assay_type',
+      'secondary_project': 'secondary_project'
     };
     const mapping = {
       'studyId': 'study_id',
@@ -47,7 +48,8 @@ export class ApiDataService {
       'numberOfFiles': 'files',
       'numberOfAnalyses': 'analyses',
       'availableInPortal': 'available_in_portal',
-      'submissionDate': 'submission_date'
+      'submissionDate': 'submission_date',
+      'secondaryProject': 'secondary_project'
     };
     const filters = query['filters'];
     for (const prop of Object.keys(filters)) {
@@ -80,7 +82,8 @@ export class ApiDataService {
             numberOfFiles: entry['_source']['files'] ? entry['_source']['files']['length'] : 0,
             numberOfAnalyses: entry['_source']['analyses'] ? entry['_source']['analyses']['length'] : 0,
             availableInPortal: entry['_source']['available_in_portal'],
-            submissionDate: entry['_source']['submission_date']
+            submissionDate: entry['_source']['submission_date'],
+            secondaryProject: entry['_source']['secondary_project']
           } as SubmissionTable)
         );
         console.log(data.hits.hits);
@@ -94,8 +97,9 @@ export class ApiDataService {
   }
 
   getEnaSubmission(accession: string) {
-    const url = `${this.hostSetting.host}data/submissions_test/_search/?q=study_id:${accession}`;
-    // const url = `http://localhost:8000/data/submissions_test/_search/?q=study_id:${accession}`;
+    // const url = `${this.hostSetting.host}data/submissions_test/_search/?q=study_id:${accession}`;
+    // console.log(url)
+    const url = `http://localhost:8000/data/submissions_test/_search/?q=study_id:${accession}`;
 
     return this.http.get<any>(url).pipe(
       retry(3),
@@ -105,15 +109,15 @@ export class ApiDataService {
 
 
   subscribeUser(subscriptionId, subscriptionType, subscriberEmail) {
-    const url =  `${this.hostSetting.host}submission/submission_subscribe/${subscriptionId}/${subscriptionType}/${subscriberEmail}`;
-    // const url =  `http://localhost:8000/submission/submission_subscribe/${subscriptionId}/${subscriptionType}/${subscriberEmail}`;
+    // const url =  `${this.hostSetting.host}submission/submission_subscribe/${subscriptionId}/${subscriptionType}/${subscriberEmail}`;
+    const url =  `http://localhost:8000/submission/submission_subscribe/${subscriptionId}/${subscriptionType}/${subscriberEmail}`;
     return this.http.get(url);
   }
 
 
   unsubscribeUser(studyId, subscriberEmail) {
-    const url =  '${this.hostSetting.host}submission/submission_unsubscribe/' + studyId + '/' + subscriberEmail;
-    // const url =  'http://localhost:8000/submission/submission_unsubscribe/' + studyId + '/' + subscriberEmail;
+    // const url =  '${this.hostSetting.host}submission/submission_unsubscribe/' + studyId + '/' + subscriberEmail;
+    const url =  'http://localhost:8000/submission/submission_unsubscribe/' + studyId + '/' + subscriberEmail;
     return this.http.get(url);
   }
 

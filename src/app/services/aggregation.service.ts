@@ -8,6 +8,7 @@ export class AggregationService {
 
   activeFilters = {
     assay_type: [],
+    secondary_project: []
   };
 
   currentActiveFilters = [];
