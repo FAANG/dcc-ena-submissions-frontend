@@ -1,4 +1,4 @@
-import {Component, Input, Output, AfterViewInit, ViewChild, EventEmitter, TemplateRef} from '@angular/core';
+import {Component, Input, Output, AfterViewInit, ViewChild, EventEmitter, TemplateRef, OnInit} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
@@ -7,6 +7,7 @@ import {map, startWith, switchMap, catchError} from 'rxjs/operators';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {MatDialog} from '@angular/material/dialog';
 import {ApiDataService} from '../services/api-data.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -15,7 +16,7 @@ import {ApiDataService} from '../services/api-data.service';
   styleUrls: ['./table-server-side.component.css']
 })
 
-export class TableServerSideComponent implements AfterViewInit {
+export class TableServerSideComponent implements OnInit, AfterViewInit {
   @Input() display_fields: Array<string>; // list of fields to be displayed in the table
   @Input() column_names: Array<string>; // list of column headers for the selected fields
   @Input() filter_values: Observable<Object>; // filter values in the format { col1: [val1, val2..], col2: [val1, val2...], ... }
@@ -37,16 +38,22 @@ export class TableServerSideComponent implements AfterViewInit {
   subscriber = { email: '', studyId: '' };
   socket;
   submission_message: string;
-
+  subscription_status: string;
+  public subscriptionForm: FormGroup;
 
   dialogRef: any;
-
   @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
 
 
   constructor(private spinner: NgxSpinnerService,
               public dialog: MatDialog,
               private dataService: ApiDataService,) {
+  }
+
+  ngOnInit() {
+    this.subscriptionForm = new FormGroup({
+      subscriberEmail: new FormControl('', [Validators.required, Validators.email]),
+    });
   }
 
   ngAfterViewInit() {
@@ -141,31 +148,39 @@ export class TableServerSideComponent implements AfterViewInit {
 
 
 
+  onRegister(result) {
+    console.log("this.subscriptionForm.errors: ", this.subscriptionForm.valid, this.subscriptionForm.touched)
+    console.log(result)
+    if (this.subscriptionForm.valid && this.subscriptionForm.touched){
+      this.dataService.subscribeUser(result.studyId, 'study', result.email).subscribe(response => {
+          console.log("You have now been subscribed!")
+          this.dialogRef.close();
+        },
+        error => {
+          console.log(error);
+          this.dialogRef.close();
+        }
+      );
+    }
+  }
 
   openSubscriptionDialog(studyId: string) {
     this.subscriber.studyId = studyId;
     this.dialogRef = this.dialog.open(this.subscriptionTemplate,
-      { data: this.subscriber, height: '260px', width: '350px' });
-
-    this.dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        console.log(result?.email + "--->" + studyId);
-        this.dataService.subscribeUser(studyId, result.email).subscribe(response => {
-            console.log("You have now been subscribed!")
-          },
-          error => {
-            console.log(error);
-          }
-        );
-      }
-    });
+      { data: this.subscriber, height: '260px', width: '400px' });
   }
-  onCancelCityDialog() {
+
+  onCancelDialog() {
     this.dialogRef.close();
   }
 
+  public displayError = (controlName: string, errorName: string) =>{
+    return this.subscriptionForm.controls[controlName].hasError(errorName);
+  }
+
   setSocket() {
-    const url = 'ws://127.0.0.1:8000/ws/submission/enaSubmissions/';
+    const url = 'wss://api.faang.org/ws/submission/enaSubmissions/';
+
     console.log(url)
     this.socket = new WebSocket(url);
     this.socket.onopen = () => {
@@ -176,6 +191,7 @@ export class TableServerSideComponent implements AfterViewInit {
 
       if (data['submission_message']) {
         this.submission_message = data['submission_message'];
+        this.subscription_status = data['subscription_status'];
       }
 
     };
@@ -184,6 +200,17 @@ export class TableServerSideComponent implements AfterViewInit {
       this.socket.onopen(null);
     }
   }
+
+
+  truncate(str, n, useWordBoundary) {
+    if (str.length <= n) {
+      return str;
+    }
+    const subString = str.slice(0, n - 1);
+    return (useWordBoundary
+      ? subString.slice(0, subString.lastIndexOf("_"))
+      : subString) + "\u2026";
+  };
 
 
 }

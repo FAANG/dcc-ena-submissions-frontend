@@ -5,6 +5,8 @@ import {Observable, Subscription} from 'rxjs';
 import {Title} from '@angular/platform-browser';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {TableServerSideComponent} from "../table-server-side/table-server-side.component";
+import {MatDialog} from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-submission',
@@ -24,6 +26,10 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   templates: Object;
   aggrSubscription: Subscription;
   data = {};
+  subscriber = { email: '', assayType: '', secondaryProject: '' };
+  dialogRef: any;
+  public subscriptionForm: FormGroup;
+  @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
 
   query = {
     'sort': ['study_id','desc'],
@@ -44,11 +50,14 @@ export class SubmissionComponent implements OnInit, OnDestroy {
 
   defaultSort = ['study_id','desc'];
   error: string;
+  currentFilters: any;
+  subscriptionDialogTitle: string;
 
   constructor(private dataService: ApiDataService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private aggregationService: AggregationService,
+              public dialog: MatDialog,
               private titleService: Title) { }
 
   ngOnInit() {
@@ -91,6 +100,11 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['submissions'], {queryParams: params});
     });
+    this.currentFilters = this.aggregationService.activeFilters;
+
+    this.subscriptionForm = new FormGroup({
+      subscriberEmail: new FormControl('', [Validators.required, Validators.email]),
+    });
   }
 
   hasActiveFilters() {
@@ -123,5 +137,50 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       this.resetFilter();
     }
     this.aggrSubscription.unsubscribe();
+  }
+
+  openSubscriptionDialog(currentFilters: { assay_type: string[]; secondary_project: string[] }) {
+    this.subscriptionDialogTitle = ''
+    this.subscriber.assayType = currentFilters['assay_type'][0];
+    this.subscriber.secondaryProject = currentFilters['secondary_project'][0];
+
+    if (this.subscriber.assayType && this.subscriber.secondaryProject){
+      this.subscriptionDialogTitle = `Subscribing to entries of Assay Type '${this.subscriber.assayType}'
+      AND Secondary Project '${this.subscriber.secondaryProject}'`
+    } else{
+      if (this.subscriber.assayType){
+        this.subscriptionDialogTitle = `Subscribing to Assay Type '${this.subscriber.assayType}'`
+      }
+      if (this.subscriber.secondaryProject){
+        this.subscriptionDialogTitle = `Subscribing to Secondary Project '${this.subscriber.secondaryProject}'`
+      }
+    }
+
+
+
+    this.dialogRef = this.dialog.open(this.subscriptionTemplate,
+      { data: this.subscriber, height: '300px', width: '400px' });
+  }
+
+  public displayError = (controlName: string, errorName: string) =>{
+    return this.subscriptionForm.controls[controlName].hasError(errorName);
+  }
+
+  onCancelDialog() {
+    this.dialogRef.close();
+  }
+
+  onRegister(data) {
+    if (this.subscriptionForm.valid && this.subscriptionForm.touched){
+      this.dataService.subscribeUser(data, 'filtered_subscription', data.email).subscribe(response => {
+          console.log("You have now been subscribed!")
+          this.dialogRef.close();
+        },
+        error => {
+          console.log(error);
+          this.dialogRef.close();
+        }
+      );
+    }
   }
 }

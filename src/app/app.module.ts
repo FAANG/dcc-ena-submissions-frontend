@@ -6,6 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
 import {FormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -16,6 +17,7 @@ import { FilterComponent } from './filter/filter.component';
 import { ActiveFilterComponent } from './active-filter/active-filter.component';
 import { SubmissionDetailComponent } from './submission/submission-detail/submission-detail.component';
 import { RelatedDataComponent } from './related-data/related-data.component';
+import { UnsubscribeComponent } from './submission/unsubscribe/unsubscribe.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { RelatedDataComponent } from './related-data/related-data.component';
     FilterComponent,
     ActiveFilterComponent,
     SubmissionDetailComponent,
-    RelatedDataComponent
+    RelatedDataComponent,
+    UnsubscribeComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +41,7 @@ import { RelatedDataComponent } from './related-data/related-data.component';
     BrowserAnimationsModule,
     NgxSpinnerModule,
     FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

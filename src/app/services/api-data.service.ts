@@ -34,7 +34,7 @@ export class ApiDataService {
 
   getAllEnaSubmissions(query: any, size: number) {
     const url = `${this.hostSetting.host}data/submissions/_search/?size=${size}`;
-    // const url = `http://localhost:8000/data/submissions_test/_search/?size=${size}`;
+
     const aggs = {
       'assay_type': 'assay_type',
       'secondary_project': 'secondary_project'
@@ -98,7 +98,6 @@ export class ApiDataService {
 
   getEnaSubmission(accession: string) {
     const url = `${this.hostSetting.host}data/submissions/_search/?q=study_id:${accession}`;
-    // const url = `http://localhost:8000/data/submissions_test/_search/?q=study_id:${accession}`;
 
     return this.http.get<any>(url).pipe(
       retry(3),
@@ -107,9 +106,20 @@ export class ApiDataService {
   }
 
 
-  subscribeUser(studyId, subscriberEmail) {
-    const url =  `${this.hostSetting.host}submission/submission_subscribe/` + studyId + '/' + subscriberEmail;
-    // const url =  'http://localhost:8000/submission/submission_subscribe/' + studyId + '/' + subscriberEmail;
+  subscribeUser(subscriptionData, subscriptionType, subscriberEmail) {
+    let url = ''
+    if (subscriptionType === 'study'){
+      url =  `${this.hostSetting.host}submission/submission_subscribe/${subscriptionData}/${subscriberEmail}`;
+    } else{
+      const assayType = subscriptionData.assayType ?  subscriptionData.assayType : 'None'
+      const secondaryProject = subscriptionData.secondaryProject ?  subscriptionData.secondaryProject : 'None'
+      url =  `${this.hostSetting.host}submission/submission_subscribe/${assayType}/${secondaryProject}/${subscriberEmail}`;
+    }
+    return this.http.get(url);
+  }
+
+  unsubscribeUser(studyId, subscriberEmail) {
+    const url =  `${this.hostSetting.host}submission/submission_unsubscribe/${studyId}/${subscriberEmail}`;
     return this.http.get(url);
   }
 

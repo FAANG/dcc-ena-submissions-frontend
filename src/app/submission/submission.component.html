@@ -12,6 +12,11 @@
       <div *ngIf="hasActiveFilters()">
         <app-active-filter *ngIf="hasActiveFilters()"></app-active-filter>
         <button mat-raised-button (click)="removeFilter()">Remove all filters</button>
+        <button mat-raised-button
+                matTooltip="Subscribe to selected Assay Type"
+                (click)="openSubscriptionDialog(currentFilters)">
+          <mat-icon class="subscription-icon">email</mat-icon>
+        </button>
         <hr>
       </div>
       <app-table-server-side  [display_fields]="displayFields"
@@ -25,4 +30,29 @@
   </div>
 </div>
 
+
+<ng-template let-data #subscriptionTemplate>
+  <h3 mat-dialog-title> {{subscriptionDialogTitle}}</h3>
+  <div mat-dialog-content class="centerContents">
+    <form [formGroup]="subscriptionForm" novalidate>
+      <p>
+        <mat-form-field appearance="fill" [style.width.%]="100">
+          <input matInput [(ngModel)]="data.email" placeholder="Enter email" formControlName="subscriberEmail" id="subscriberEmail">
+          <mat-hint align="end">Enter a valid email address.</mat-hint>
+          <mat-error *ngIf="displayError('subscriberEmail', 'required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="displayError('subscriberEmail', 'email')">
+            Please enter a valid email
+          </mat-error>
+        </mat-form-field>
+      </p>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onCancelDialog()">Cancel</button>
+    <button mat-button (click)="onRegister(data)" cdkFocusInitial>Register</button>
+
+  </div>
+</ng-template>
 
