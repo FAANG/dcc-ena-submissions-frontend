@@ -179,8 +179,6 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
   }
 
   setSocket() {
-    // const url = 'ws://127.0.0.1:8000/ws/submission/enaSubmissions/';
-    // const url = 'ws://127.0.0.1:57564/ws/submission/enaSubmissions/';
     const url = 'wss://api.faang.org/ws/submission/enaSubmissions/';
 
     console.log(url)
