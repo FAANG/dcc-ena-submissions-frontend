@@ -34,6 +34,7 @@ export class ApiDataService {
 
   getAllEnaSubmissions(query: any, size: number) {
     const url = `${this.hostSetting.host}data/submissions/_search/?size=${size}`;
+
     const aggs = {
       'assay_type': 'assay_type',
       'secondary_project': 'secondary_project'
