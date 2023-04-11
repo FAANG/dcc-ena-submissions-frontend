@@ -54,10 +54,10 @@
 </div>
 
 <ng-template #availableTemplate let-item>
-  <td *ngIf="isAvailable(item['available_in_portal'])" [ngClass]="availableClass(item['available_in_portal'])">
+  <td *ngIf="isAvailable(item['availableInPortal'])" [ngClass]="availableClass(item['availableInPortal'])">
     <i class="material-icons">check_circle</i>
   </td>
-  <td *ngIf="!isAvailable(item['available_in_portal'])" [ngClass]="availableClass(item['available_in_portal'])">
+  <td *ngIf="!isAvailable(item['availableInPortal'])" [ngClass]="availableClass(item['availableInPortal'])">
     <i class="material-icons">highlight_off</i>
   </td>
 </ng-template>
