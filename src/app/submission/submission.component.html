@@ -14,7 +14,7 @@
         <button mat-raised-button (click)="removeFilter()">Remove all filters</button>
         <button mat-raised-button
                 matTooltip="Subscribe to selected Assay Type"
-                (click)="openSubscriptionDialog(aggs[0])">
+                (click)="openSubscriptionDialog(currentFilters)">
           <mat-icon class="subscription-icon">email</mat-icon>
         </button>
         <hr>
@@ -32,7 +32,7 @@
 
 
 <ng-template let-data #subscriptionTemplate>
-  <h3 mat-dialog-title>Subscribing to AssayType '{{data.assayType}}'</h3>
+  <h3 mat-dialog-title> {{subscriptionDialogTitle}}</h3>
   <div mat-dialog-content class="centerContents">
     <form [formGroup]="subscriptionForm" novalidate>
       <p>

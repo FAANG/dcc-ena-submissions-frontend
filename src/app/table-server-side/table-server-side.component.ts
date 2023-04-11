@@ -167,7 +167,7 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
   openSubscriptionDialog(studyId: string) {
     this.subscriber.studyId = studyId;
     this.dialogRef = this.dialog.open(this.subscriptionTemplate,
-      { data: this.subscriber, height: '260px', width: '350px' });
+      { data: this.subscriber, height: '260px', width: '400px' });
   }
 
   onCancelDialog() {
@@ -179,7 +179,10 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
   }
 
   setSocket() {
-    const url = 'ws://127.0.0.1:8000/ws/submission/enaSubmissions/';
+    // const url = 'ws://127.0.0.1:8000/ws/submission/enaSubmissions/';
+    // const url = 'ws://127.0.0.1:57564/ws/submission/enaSubmissions/';
+    const url = 'wss://api.faang.org/ws/submission/enaSubmissions/';
+
     console.log(url)
     this.socket = new WebSocket(url);
     this.socket.onopen = () => {
