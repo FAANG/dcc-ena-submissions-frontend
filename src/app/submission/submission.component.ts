@@ -32,7 +32,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
 
   query = {
-    'sort': ['study_id','desc'],
+    'sort': ['submission_date','desc'],
     '_source': [
       'study_id',
       'study_alias',
@@ -48,7 +48,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     'search': ''
   };
 
-  defaultSort = ['study_id','desc'];
+  defaultSort = ['submission_date','desc'];
   error: string;
   currentFilters: any;
   subscriptionDialogTitle: string;

@@ -11,7 +11,9 @@ import {NgxSpinnerService} from 'ngx-spinner';
 })
 export class SubmissionDetailComponent implements OnInit {
   submittedExperiments: Array<any> = [];
+  availableExperiments: Array<any> = [];
   submittedAnalyses: Array<any> = [];
+  availableAnalyses: Array<any> = [];
   studyId: string;
   error: any;
   displayedColumns: string[];
@@ -50,11 +52,13 @@ export class SubmissionDetailComponent implements OnInit {
                 submission_date: submissionDate
               }));
               this.submittedExperiments.push(...relatedExperiments);
+              this.availableExperiments = relatedExperiments.filter(ele => ele['available_in_portal'] === 'true');
             }
             if (relatedAnalyses.length > 0){
               relatedAnalyses.map(obj => Object.assign(obj, {
                 submission_date: submissionDate}));
               this.submittedAnalyses.push(...relatedAnalyses);
+              this.availableAnalyses = relatedAnalyses.filter(ele => ele['available_in_portal'] === 'true');
             }
 
             this.displayTable = true;
