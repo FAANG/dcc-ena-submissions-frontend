@@ -9,6 +9,29 @@
         <a [href]="ena_prefix + submission?.study_id" target="_blank">{{submission?.study_id}}</a>
       </div>
     </div>
+
+    <div fxLayout="row" *ngIf="submittedExperiments.length !== 0">
+      <div fxFlex="15">Experiments Submitted:</div>
+      <div>{{submittedExperiments.length}}</div>
+    </div>
+
+    <div fxLayout="row" *ngIf="availableExperiments.length !== 0">
+      <div fxFlex="15">Experiments Available in FAANG data portal:</div>
+      <div>{{availableExperiments.length}}</div>
+    </div>
+
+    <div fxLayout="row" *ngIf="submittedAnalyses.length !== 0">
+      <div fxFlex="15">Analyses Submitted:</div>
+      <div>{{submittedAnalyses.length}}</div>
+    </div>
+
+    <div fxLayout="row" *ngIf="availableAnalyses.length !== 0">
+      <div fxFlex="15">Analyses Available in FAANG data portal:</div>
+      <div>{{availableAnalyses.length}}</div>
+    </div>
+
+
+
     <div fxLayout="row">
       <div fxFlex="15">Alias:</div>
       <div>{{submission?.study_alias}}</div>
@@ -18,7 +41,7 @@
       <div>{{submission?.assay_type}}</div>
     </div>
     <div fxLayout="row">
-      <div fxFlex="15">Secondary project:</div>
+      <div fxFlex="15">Secondary Project:</div>
       <div>{{submission?.secondary_project}}</div>
     </div>
   </div>
