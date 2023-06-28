@@ -26,7 +26,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   templates: Object;
   aggrSubscription: Subscription;
   data = {};
-  subscriber = { email: '', assayType: '', secondaryProject: '' };
+  subscriberEmail: string;
   dialogRef: any;
   public subscriptionForm: FormGroup;
   @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
@@ -52,6 +52,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   error: string;
   currentFilters: any;
   subscriptionDialogTitle: string;
+  indexDetails: {};
 
   constructor(private dataService: ApiDataService,
               private activatedRoute: ActivatedRoute,
@@ -61,6 +62,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
               private titleService: Title) { }
 
   ngOnInit() {
+    this.indexDetails = {index: 'submissions', indexKey: 'study_id', apiKey: 'study_id'}
     this.loadTableDataFunction = this.dataService.getAllEnaSubmissions.bind(this.dataService);
     this.titleService.setTitle('ENA Submissions');
     this.activatedRoute.queryParams.subscribe((params: Params) => {
@@ -139,27 +141,11 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     this.aggrSubscription.unsubscribe();
   }
 
+
   openSubscriptionDialog(currentFilters: { assay_type: string[]; secondary_project: string[] }) {
-    this.subscriptionDialogTitle = ''
-    this.subscriber.assayType = currentFilters['assay_type'][0];
-    this.subscriber.secondaryProject = currentFilters['secondary_project'][0];
-
-    if (this.subscriber.assayType && this.subscriber.secondaryProject){
-      this.subscriptionDialogTitle = `Subscribing to entries of Assay Type '${this.subscriber.assayType}'
-      AND Secondary Project '${this.subscriber.secondaryProject}'`
-    } else{
-      if (this.subscriber.assayType){
-        this.subscriptionDialogTitle = `Subscribing to Assay Type '${this.subscriber.assayType}'`
-      }
-      if (this.subscriber.secondaryProject){
-        this.subscriptionDialogTitle = `Subscribing to Secondary Project '${this.subscriber.secondaryProject}'`
-      }
-    }
-
-
-
+    this.subscriptionDialogTitle = 'Subscribing to the filtered entries'
     this.dialogRef = this.dialog.open(this.subscriptionTemplate,
-      { data: this.subscriber, height: '300px', width: '400px' });
+      { height: '300px', width: '400px' });
   }
 
   public displayError = (controlName: string, errorName: string) =>{
@@ -170,9 +156,15 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
-  onRegister(data) {
+
+  getEmail(event: Event){
+    this.subscriberEmail = (<HTMLInputElement>event.target).value;
+  }
+
+
+  onRegister() {
     if (this.subscriptionForm.valid && this.subscriptionForm.touched){
-      this.dataService.subscribeUser(data, 'filtered_subscription', data.email).subscribe(response => {
+      this.dataService.subscribeFilteredData(this.indexDetails['index'], this.indexDetails['indexKey'], this.subscriberEmail).subscribe(response => {
           console.log("You have now been subscribed!")
           this.dialogRef.close();
         },
@@ -183,4 +175,5 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       );
     }
   }
+
 }

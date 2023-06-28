@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {throwError} from 'rxjs';
 import {catchError, retry, map} from 'rxjs/operators';
 import {HostSetting} from './host-setting';
+import { ApiFiltersService } from './api-filters.service';
 
 interface SubmissionTable {
   studyId: string;
@@ -29,7 +30,8 @@ interface ExperimentsTable {
 export class ApiDataService {
   hostSetting = new HostSetting;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private apiFiltersService: ApiFiltersService) {
   }
 
   getAllEnaSubmissions(query: any, size: number) {
@@ -58,6 +60,10 @@ export class ApiDataService {
         delete filters[prop];
       }
     }
+
+    // set the service variable current_api_filters with the current filters for global use
+    this.apiFiltersService.set_current_api_filters(filters);
+
     const sortParams = mapping[query['sort'][0]] ? mapping[query['sort'][0]] + ':' + query['sort'][1] : query['sort'][0] + ':' + query[
       'sort'][1];
     let params = new HttpParams().set('_source', query['_source'].toString()).set('filters', JSON.stringify(filters)).set('aggs',
@@ -105,17 +111,19 @@ export class ApiDataService {
     );
   }
 
+  subscribeUser(indexName, indexKey, subscriberEmail, filters) {
+    const url = `${this.hostSetting.host}submission/submission_subscribe_faang/${indexName}/${indexKey}/${subscriberEmail}`;
+    const params = new HttpParams().set('filters', JSON.stringify(filters));
+    return this.http.get(url, {params: params})
+  }
 
-  subscribeUser(subscriptionData, subscriptionType, subscriberEmail) {
-    let url = ''
-    if (subscriptionType === 'study'){
-      url =  `${this.hostSetting.host}submission/submission_subscribe/${subscriptionData}/${subscriberEmail}`;
-    } else{
-      const assayType = subscriptionData.assayType ?  subscriptionData.assayType : 'None'
-      const secondaryProject = subscriptionData.secondaryProject ?  subscriptionData.secondaryProject : 'None'
-      url =  `${this.hostSetting.host}submission/submission_subscribe/${assayType}/${secondaryProject}/${subscriberEmail}`;
-    }
-    return this.http.get(url);
+  subscribeFilteredData(indexName, indexKey, subscriberEmail) {
+    const filters = this.apiFiltersService.get_current_api_filters();
+    console.log("new filters: ", filters)
+
+    const url = `${this.hostSetting.host}submission/submission_subscribe_faang/${indexName}/${indexKey}/${subscriberEmail}`;
+    const params = new HttpParams().set('filters', JSON.stringify(filters));
+    return this.http.get(url, {params: params})
   }
 
   unsubscribeUser(studyId, subscriberEmail) {

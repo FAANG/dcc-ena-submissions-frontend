@@ -23,6 +23,7 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
   @Input() apiFunction: Function; // function that queries the API endpoints
   @Input() query: Object; // query params ('sort', 'aggs', 'filters', '_source', 'from_')
   @Input() defaultSort: string[]; // default sort param e.g - ['id': 'desc'];
+  @Input() indexDetails: Object;
 
   @Output() dataUpdate = new EventEmitter<any>();
   @Output() sortUpdate = new EventEmitter<any>();
@@ -31,18 +32,21 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('availableTemplate', { static: true }) availableTemplate: TemplateRef<any>;
   @ViewChild('subscribeDialog') subscribeDialog: TemplateRef<any>;
+  @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
 
   dataSource = new MatTableDataSource();
   totalHits = 0;
   timer: any;
-  subscriber = { email: '', studyId: '' };
+  subscriber = { email: '', filters: {} };
   socket;
   submission_message: string;
   subscription_status: string;
+  apiKey:string;
+  subscriptionDialogTitle: string;
   public subscriptionForm: FormGroup;
 
   dialogRef: any;
-  @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
+  
 
 
   constructor(private spinner: NgxSpinnerService,
@@ -57,6 +61,7 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.apiKey = this.indexDetails['apiKey']
     // Reset back to the first page when sort order is changed
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
@@ -146,14 +151,10 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
     this.dialog.open(this.subscribeDialog);
   }
 
-
-
-  onRegister(result) {
-    console.log("this.subscriptionForm.errors: ", this.subscriptionForm.valid, this.subscriptionForm.touched)
-    console.log(result)
+  onRegister(data) {
     if (this.subscriptionForm.valid && this.subscriptionForm.touched){
-      this.dataService.subscribeUser(result.studyId, 'study', result.email).subscribe(response => {
-          console.log("You have now been subscribed!")
+      this.dataService.subscribeUser(this.indexDetails['index'], this.indexDetails['indexKey'], data.email, data.filters).subscribe(response => {
+          console.log("You have now been subscribed!", response)
           this.dialogRef.close();
         },
         error => {
@@ -164,8 +165,9 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openSubscriptionDialog(studyId: string) {
-    this.subscriber.studyId = studyId;
+  openSubscriptionDialog(value: string) {
+    this.subscriptionDialogTitle = `Subscribing to record ${value}`
+    this.subscriber.filters[this.indexDetails['indexKey']] = [value];
     this.dialogRef = this.dialog.open(this.subscriptionTemplate,
       { data: this.subscriber, height: '260px', width: '400px' });
   }
@@ -179,9 +181,7 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
   }
 
   setSocket() {
-    const url = 'wss://api.faang.org/ws/submission/enaSubmissions/';
-
-    console.log(url)
+    const url = `wss://api.faang.org/ws/submission/subscription_${this.indexDetails['index']}/`;
     this.socket = new WebSocket(url);
     this.socket.onopen = () => {
       console.log('WebSockets connection created.');
@@ -199,6 +199,10 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.onopen(null);
     }
+  }
+
+  getEmail(event: Event){
+    this.subscriber.email = (<HTMLInputElement>event.target).value;
   }
 
 
