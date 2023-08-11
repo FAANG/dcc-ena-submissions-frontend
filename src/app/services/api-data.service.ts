@@ -103,7 +103,7 @@ export class ApiDataService {
   }
 
   getEnaSubmission(accession: string) {
-    const url = `${this.hostSetting.host}data/submissions/_search/?q=study_id:${accession}`;
+    const url = `${this.hostSetting.host}data/submissions/_search/?q=study_id:${accession}&aggs={"available_in_portal":"available_in_portal"}`;
 
     return this.http.get<any>(url).pipe(
       retry(3),

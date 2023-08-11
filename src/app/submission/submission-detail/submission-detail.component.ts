@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiDataService} from '../../services/api-data.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {AggregationService} from '../../services/aggregation.service';
 import {Title} from '@angular/platform-browser';
 import {NgxSpinnerService} from 'ngx-spinner';
 
@@ -14,6 +15,7 @@ export class SubmissionDetailComponent implements OnInit {
   availableExperiments: Array<any> = [];
   submittedAnalyses: Array<any> = [];
   availableAnalyses: Array<any> = [];
+  filter_field: {};
   studyId: string;
   error: any;
   displayedColumns: string[];
@@ -22,6 +24,7 @@ export class SubmissionDetailComponent implements OnInit {
   readonly ena_prefix = 'https://www.ebi.ac.uk/ena/browser/view/';
 
   constructor(private dataService: ApiDataService,
+              private aggregationService: AggregationService,
               private route: ActivatedRoute,
               private router: Router,
               private titleService: Title,
@@ -63,6 +66,7 @@ export class SubmissionDetailComponent implements OnInit {
 
             this.displayTable = true;
           }
+          this.aggregationService.getAggregations(data);
         }
         this.spinner.hide();
       },
@@ -71,6 +75,26 @@ export class SubmissionDetailComponent implements OnInit {
         this.spinner.hide();
       }
     );
+  }
+
+  hasActiveFilters() {
+    if (typeof this.filter_field === 'undefined') {
+      return false;
+    }
+    for (const key of Object.keys(this.filter_field)) {
+      if (this.filter_field[key].length !== 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  removeFilter() {
+    for (const key of Object.keys(this.aggregationService.activeFilters)) {
+      this.aggregationService.activeFilters[key] = [];
+    }
+    this.aggregationService.currentActiveFilters = [];
+    this.filter_field = Object.assign({}, this.filter_field);
   }
 
 }

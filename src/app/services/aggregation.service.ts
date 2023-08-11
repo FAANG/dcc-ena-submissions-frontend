@@ -8,7 +8,8 @@ export class AggregationService {
 
   activeFilters = {
     assay_type: [],
-    secondary_project: []
+    secondary_project: [],
+    available_in_portal: []
   };
 
   currentActiveFilters = [];

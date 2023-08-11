@@ -35,6 +35,9 @@ export class FilterComponent implements OnInit, OnDestroy {
         else if (this.title === 'Secondary project') {
           this.aggregation = data['secondary_project'];
         }
+        else if (this.title === 'Available in Portal') {
+          this.aggregation = data['available_in_portal'];
+        }
         this.cdRef.detectChanges();
       }
     );
@@ -50,6 +53,10 @@ export class FilterComponent implements OnInit, OnDestroy {
       }
       case 'Secondary project': {
         aggField = 'secondary_project';
+        break;
+      }
+      case 'Available in Portal': {
+        aggField = 'available_in_portal';
         break;
       }
     }

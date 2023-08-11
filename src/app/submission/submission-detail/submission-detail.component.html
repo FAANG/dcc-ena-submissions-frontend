@@ -45,17 +45,28 @@
       <div>{{submission?.secondary_project}}</div>
     </div>
   </div>
-  <div *ngIf="displayTable" class="related-data">
-
-    <app-related-data dataType="experiments"
-                      [data]="submittedExperiments"
-                      [displayedColumns]="displayedColumns">
-    </app-related-data>
-
-    <app-related-data dataType="analyses"
-                      [data]="submittedAnalyses"
-                      [displayedColumns]="displayedColumns">
-    </app-related-data>
+  <div *ngIf="displayTable" class="related-data" 
+    fxLayoutGap="2%" fxLayout="row" fxLayout.lt-md="column">
+    <div fxFlex="17">
+      <app-filter title="Available in Portal" [filterSize]=2></app-filter>
+    </div>
+    <div fxFlex="83" class="table-responsive">
+      <div *ngIf="hasActiveFilters()">
+        <app-active-filter *ngIf="hasActiveFilters()"></app-active-filter>
+        <button mat-raised-button (click)="removeFilter()">Remove all filters</button>
+        <hr>
+      </div>
+      <app-related-data dataType="experiments"
+                        [data]="submittedExperiments"
+                        [displayedColumns]="displayedColumns"
+                        [filter_values]="filter_field">
+      </app-related-data>
+  
+      <app-related-data dataType="analyses"
+                        [data]="submittedAnalyses"
+                        [displayedColumns]="displayedColumns">
+      </app-related-data>
+    </div>
   </div>
 </div>
 
