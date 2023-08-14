@@ -7,6 +7,8 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {HttpClient, HttpEventType} from '@angular/common/http';
 import {Observable, of as observableOf} from 'rxjs';
+import { FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-related-data',
@@ -38,6 +40,10 @@ export class RelatedDataComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.fieldListener();
+    this.dataSource.filterPredicate = this.createFilter();
+
+
   }
 
   searchChanged(event: any) {
@@ -54,6 +60,48 @@ export class RelatedDataComponent implements OnInit {
 
   applySearchFilter(value: string) {
     this.dataSource.filter = value;
+  }
+
+
+  sourceFilter = new FormControl('');
+  accessionFilter = new FormControl('');
+
+  filterValues: any = {
+    available_in_portal: '',
+    accession: ''
+  }
+  private fieldListener() {
+    this.sourceFilter.valueChanges
+      .subscribe(
+        source => {
+          this.filterValues.available_in_portal = source;
+          console.log("JSON.stringify(this.filterValues): ", JSON.stringify(this.filterValues))
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
+
+    this.accessionFilter.valueChanges
+      .subscribe(
+        accession => {
+          this.filterValues.accession = accession;
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
+  }
+
+  private createFilter(): (contact, filter: string) => boolean {
+    let filterFunction = function (contact, filter): boolean {
+      let searchTerms = JSON.parse(filter);
+
+      return contact.available_in_portal.indexOf(searchTerms.available_in_portal) !== -1
+        && contact.accession.indexOf(searchTerms.accession) !== -1;
+    }
+    return filterFunction;
+  }
+
+  clearFilter() {
+    this.sourceFilter.setValue('');
+    this.accessionFilter.setValue('');
   }
 
   isAvailable(available: any) {
