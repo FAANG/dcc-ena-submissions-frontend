@@ -4,61 +4,27 @@
     <h3>Submitted {{dataType|titlecase}}</h3>
   </div>
 
+  <div class="search-element">
+    <div class="select-search-element">
+      <mat-form-field>
+        <mat-label>Available in Portal</mat-label>
+        <mat-select [formControl]="availabilityFilter">
+          <mat-option>All Entries</mat-option>
+          <mat-option  value="true">Available</mat-option>
+          <mat-option  value="false">Not Available</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="input-search-element">
+      <mat-form-field style="width: 100%;">
+        <mat-label>Search</mat-label>
+        <input [formControl]="inputSearchFilter" matInput
+               placeholder="Search">
+      </mat-form-field>
+    </div>
+  </div>
+
   <div class="table-responsive">
-<!--    <mat-form-field style="width: 98%;">-->
-<!--      <mat-label>Search</mat-label>-->
-<!--      <input (keyup)="searchChanged($event)" matInput-->
-<!--             placeholder="Search">-->
-<!--    </mat-form-field>-->
-
-
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Filter
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <div class="vertical-form-field">
-        <div class="label">Source</div>
-        <div>
-
-          <mat-form-field style="width: 60%;">
-            <mat-label>Search</mat-label>
-            <input [formControl]="accessionFilter" matInput
-                   placeholder="Search">
-          </mat-form-field>
-
-<!--          <mat-form-field appearance="fill" class="no-label-field">-->
-<!--            <mat-select [formControl]="accessionFilter">-->
-<!--              <mat-option value="">&#45;&#45; Select an Accession &#45;&#45;</mat-option>-->
-<!--              <mat-option  value="ERX10623998">ERX10623998</mat-option>-->
-<!--              <mat-option  value="ERX10623999">ERX10623999</mat-option>-->
-<!--              <mat-option  value="ERX10624000">ERX10624000</mat-option>-->
-<!--            </mat-select>-->
-<!--          </mat-form-field>-->
-        </div>
-      </div>
-
-      <div class="vertical-form-field">
-        <div class="label">Source</div>
-        <div>
-          <mat-form-field appearance="fill" class="no-label-field">
-            <mat-select [formControl]="sourceFilter">
-              <mat-option value="">-- Select a Source --</mat-option>
-              <mat-option  value="true">Available</mat-option>
-              <mat-option  value="false">Not Available</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-
-
-      <div>
-        <button mat-raised-button color="primary" (click)="clearFilter()">Clear Filter</button>
-      </div>
-    </mat-expansion-panel>
-
     <div>
       <table mat-table matSort matSortDisableClear
              [dataSource]="dataSource.data.length > 0 ? dataSource : emptyData"

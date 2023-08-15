@@ -9,7 +9,6 @@ import {HttpClient, HttpEventType} from '@angular/common/http';
 import {Observable, of as observableOf} from 'rxjs';
 import { FormControl } from '@angular/forms';
 
-
 @Component({
   selector: 'app-related-data',
   templateUrl: './related-data.component.html',
@@ -22,9 +21,12 @@ export class RelatedDataComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('availableTemplate', { static: true }) availableTemplate: TemplateRef<any>;
 
-  timer: any;
-  delaySearch: boolean = true;
-  search = '';
+  availabilityFilter = new FormControl('');
+  inputSearchFilter = new FormControl('');
+  filterValues: any = {
+    available_in_portal: '',
+    otherFields: ''
+  }
 
   @Input() displayedColumns;
   dataSource: MatTableDataSource<any>;
@@ -42,66 +44,36 @@ export class RelatedDataComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.fieldListener();
     this.dataSource.filterPredicate = this.createFilter();
-
-
   }
 
-  searchChanged(event: any) {
-    const searchFilterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    if (this.delaySearch) {
-      if (this.timer) {
-        clearTimeout(this.timer);
-      }
-      this.timer = setTimeout(this.applySearchFilter.bind(this), 500, searchFilterValue);
-    } else {
-      this.applySearchFilter(searchFilterValue);
-    }
-  }
-
-  applySearchFilter(value: string) {
-    this.dataSource.filter = value;
-  }
-
-
-  sourceFilter = new FormControl('');
-  accessionFilter = new FormControl('');
-
-  filterValues: any = {
-    available_in_portal: '',
-    accession: ''
-  }
   private fieldListener() {
-    this.sourceFilter.valueChanges
+    this.availabilityFilter.valueChanges
       .subscribe(
-        source => {
-          this.filterValues.available_in_portal = source;
-          console.log("JSON.stringify(this.filterValues): ", JSON.stringify(this.filterValues))
+        value => {
+          this.filterValues.available_in_portal = value === undefined ? "" : value
           this.dataSource.filter = JSON.stringify(this.filterValues);
         }
       )
-
-    this.accessionFilter.valueChanges
+    this.inputSearchFilter.valueChanges
       .subscribe(
-        accession => {
-          this.filterValues.accession = accession;
+        value => {
+          this.filterValues['otherFields'] = value;
           this.dataSource.filter = JSON.stringify(this.filterValues);
         }
       )
   }
 
-  private createFilter(): (contact, filter: string) => boolean {
-    let filterFunction = function (contact, filter): boolean {
+  private createFilter(): (record, filter: string) => boolean {
+    let filterFunction = function (record, filter): boolean {
       let searchTerms = JSON.parse(filter);
+      searchTerms.otherFields = searchTerms.otherFields.trim()
 
-      return contact.available_in_portal.indexOf(searchTerms.available_in_portal) !== -1
-        && contact.accession.indexOf(searchTerms.accession) !== -1;
+      return record.available_in_portal.indexOf(searchTerms.available_in_portal) !== -1
+        && (record.accession.indexOf(searchTerms.otherFields) !== -1 ||
+            record.alias.indexOf(searchTerms.otherFields) !== -1 ||
+            record.submission_date.indexOf(searchTerms.otherFields) !== -1);
     }
     return filterFunction;
-  }
-
-  clearFilter() {
-    this.sourceFilter.setValue('');
-    this.accessionFilter.setValue('');
   }
 
   isAvailable(available: any) {
