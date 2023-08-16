@@ -4,12 +4,26 @@
     <h3>Submitted {{dataType|titlecase}}</h3>
   </div>
 
+  <div class="search-element" fxLayoutGap="2%">
+    <div class="select-search-element">
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [formControl]="availabilityFilter">
+        <mat-button-toggle value="">All Entries <span class="countEntries">({{data.length}})</span></mat-button-toggle>
+        <mat-button-toggle value="true">Available <span class="countEntries">
+          ({{countEntriesAvailability('true')}})</span></mat-button-toggle>
+        <mat-button-toggle value="false">Not available <span class="countEntries">
+          ({{countEntriesAvailability('false')}})</span></mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="input-search-element">
+      <mat-form-field style="width: 100%;">
+        <mat-label>Search</mat-label>
+        <input [formControl]="inputSearchFilter" matInput
+               placeholder="Search">
+      </mat-form-field>
+    </div>
+  </div>
+
   <div class="table-responsive">
-    <mat-form-field style="width: 98%;">
-      <mat-label>Search</mat-label>
-      <input (keyup)="searchChanged($event)" matInput
-             placeholder="Search">
-    </mat-form-field>
     <div>
       <table mat-table matSort matSortDisableClear
              [dataSource]="dataSource.data.length > 0 ? dataSource : emptyData"

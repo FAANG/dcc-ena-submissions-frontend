@@ -41,7 +41,6 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
   socket;
   submission_message: string;
   subscription_status: string;
-  apiKey:string;
   subscriptionDialogTitle: string;
   public subscriptionForm: FormGroup;
 
@@ -61,7 +60,6 @@ export class TableServerSideComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.apiKey = this.indexDetails['apiKey']
     // Reset back to the first page when sort order is changed
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 

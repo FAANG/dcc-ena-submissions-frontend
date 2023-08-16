@@ -7,6 +7,7 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import { AppRoutingModule } from './app-routing.module';
 import {FormsModule} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { AppComponent } from './app.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -41,7 +42,8 @@ import { UnsubscribeComponent } from './submission/unsubscribe/unsubscribe.compo
     BrowserAnimationsModule,
     NgxSpinnerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

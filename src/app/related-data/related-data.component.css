@@ -52,4 +52,21 @@ h3{
   color: #6f6f71;
 }
 
+.search-element {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
 
+.select-search-element {
+  /*width: 25%;*/
+}
+
+.input-search-element {
+  flex-grow: 1;
+}
+
+.countEntries {
+  font-weight: bold;
+  color: #6A889C;
+}

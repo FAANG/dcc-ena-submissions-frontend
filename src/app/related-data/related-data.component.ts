@@ -7,6 +7,7 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {HttpClient, HttpEventType} from '@angular/common/http';
 import {Observable, of as observableOf} from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-related-data',
@@ -20,9 +21,12 @@ export class RelatedDataComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('availableTemplate', { static: true }) availableTemplate: TemplateRef<any>;
 
-  timer: any;
-  delaySearch: boolean = true;
-  search = '';
+  availabilityFilter = new FormControl('');
+  inputSearchFilter = new FormControl('');
+  filterValues: any = {
+    available_in_portal: '',
+    otherFields: ''
+  }
 
   @Input() displayedColumns;
   dataSource: MatTableDataSource<any>;
@@ -38,22 +42,48 @@ export class RelatedDataComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.fieldListener();
+    this.dataSource.filterPredicate = this.createFilter();
   }
 
-  searchChanged(event: any) {
-    const searchFilterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    if (this.delaySearch) {
-      if (this.timer) {
-        clearTimeout(this.timer);
-      }
-      this.timer = setTimeout(this.applySearchFilter.bind(this), 500, searchFilterValue);
-    } else {
-      this.applySearchFilter(searchFilterValue);
+  private fieldListener() {
+    this.availabilityFilter.valueChanges
+      .subscribe(
+        value => {
+          this.filterValues.available_in_portal = value === undefined ? "" : value
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
+    this.inputSearchFilter.valueChanges
+      .subscribe(
+        value => {
+          this.filterValues['otherFields'] = value;
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        }
+      )
+  }
+
+  private createFilter(): (record, filter: string) => boolean {
+    let filterFunction = function (record, filter): boolean {
+
+      // convert values of object to lowercase - makes imput text search behave like angular material default search
+      record = Object.fromEntries(
+        Object.entries(record).map(([key, value]) => [key, typeof value == 'string' ? value.toLowerCase() : value])
+      );
+
+      let searchTerms = JSON.parse(filter);
+      searchTerms.otherFields = searchTerms.otherFields.trim().toLowerCase()
+
+      return record.available_in_portal.indexOf(searchTerms.available_in_portal) !== -1
+        && (record.accession.indexOf(searchTerms.otherFields) !== -1 ||
+            record.alias.indexOf(searchTerms.otherFields) !== -1 ||
+            record.submission_date.indexOf(searchTerms.otherFields) !== -1);
     }
+    return filterFunction;
   }
 
-  applySearchFilter(value: string) {
-    this.dataSource.filter = value;
+  countEntriesAvailability(value){
+    return this.data.filter((obj) => obj.available_in_portal === value).length;
   }
 
   isAvailable(available: any) {

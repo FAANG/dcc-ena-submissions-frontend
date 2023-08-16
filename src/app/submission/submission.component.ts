@@ -68,6 +68,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.resetFilter();
       const filters = {};
+      console.log("params: ", params)
       for (const key in params) {
         if (Array.isArray(params[key])) { // multiple values chosed for one filter
           filters[key] = params[key];
