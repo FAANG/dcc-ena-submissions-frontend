@@ -65,8 +65,14 @@ export class RelatedDataComponent implements OnInit {
 
   private createFilter(): (record, filter: string) => boolean {
     let filterFunction = function (record, filter): boolean {
+
+      // convert values of object to lowercase - makes imput text search behave like angular material default search
+      record = Object.fromEntries(
+        Object.entries(record).map(([key, value]) => [key, typeof value == 'string' ? value.toLowerCase() : value])
+      );
+
       let searchTerms = JSON.parse(filter);
-      searchTerms.otherFields = searchTerms.otherFields.trim()
+      searchTerms.otherFields = searchTerms.otherFields.trim().toLowerCase()
 
       return record.available_in_portal.indexOf(searchTerms.available_in_portal) !== -1
         && (record.accession.indexOf(searchTerms.otherFields) !== -1 ||
@@ -74,6 +80,10 @@ export class RelatedDataComponent implements OnInit {
             record.submission_date.indexOf(searchTerms.otherFields) !== -1);
     }
     return filterFunction;
+  }
+
+  countEntriesAvailability(value){
+    return this.data.filter((obj) => obj.available_in_portal === value).length;
   }
 
   isAvailable(available: any) {
