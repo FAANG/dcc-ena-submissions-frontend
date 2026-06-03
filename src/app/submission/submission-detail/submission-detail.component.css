@@ -9,3 +9,38 @@ table {
 .related-data{
   margin-top: 20px;
 }
+
+/* Layout (replaces former @angular/flex-layout fx* directives) */
+.detail-container {
+  width: 1140px;
+  max-width: 100%;
+}
+
+.detail-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.detail-label {
+  flex: 0 0 15%;
+  max-width: 15%;
+}
+
+/* flex-layout lt-md (< 960px) and lt-sm (< 600px) responsive widths */
+@media (max-width: 959.98px) {
+  .detail-container {
+    width: 80%;
+  }
+}
+
+@media (max-width: 599.98px) {
+  .detail-container {
+    width: 90%;
+  }
+}

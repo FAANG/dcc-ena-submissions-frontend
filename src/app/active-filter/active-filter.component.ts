@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AggregationService} from "../services/aggregation.service";
 
 @Component({
+  standalone: false,
   selector: 'app-active-filter',
   templateUrl: './active-filter.component.html',
   styleUrls: ['./active-filter.component.css']

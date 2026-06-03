@@ -9,6 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
+  standalone: false,
   selector: 'app-submission',
   templateUrl: './submission.component.html',
   styleUrls: ['./submission.component.css']
@@ -139,7 +140,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     if (typeof this.filter_field !== 'undefined') {
       this.resetFilter();
     }
-    this.aggrSubscription.unsubscribe();
+    this.aggrSubscription?.unsubscribe();
   }
 
 

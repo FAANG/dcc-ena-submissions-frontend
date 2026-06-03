@@ -9,7 +9,7 @@
     <td mat-cell *matCellDef="let item" class="table-cell-data" style="padding-right: 5px; max-width: 150px">
 
       <ng-container *ngIf="col === 'studyId'; else noColLink">
-        <a style="cursor: pointer" target="_blank" [routerLink]="item[col]">{{item[col]}}</a>
+        <a style="cursor: pointer" target="_blank" rel="noopener noreferrer" [routerLink]="item[col]">{{item[col]}}</a>
       </ng-container>
 
       <ng-template #noColLink>
@@ -47,8 +47,8 @@
 <mat-paginator pageSize="25" [length]="totalHits"></mat-paginator>
 
 
-<div fxLayout="row" [ngClass]="subscription_status == 'success' ? 'alert alert-success' : 'alert alert-warning'" *ngIf="submission_message">
-  <div fxFlex="100">
+<div style="display:flex; flex-direction:row" [ngClass]="subscription_status == 'success' ? 'alert alert-success' : 'alert alert-warning'" *ngIf="submission_message">
+  <div style="flex:1 1 100%">
     {{submission_message}}
   </div>
 </div>

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import  {FlexLayoutModule} from "@angular/flex-layout";
 import { MaterialModule } from "./material.module";
 import {HttpClientModule} from '@angular/common/http';
 import {NgxSpinnerModule} from 'ngx-spinner';
@@ -38,7 +37,6 @@ import { UnsubscribeComponent } from './submission/unsubscribe/unsubscribe.compo
     AppRoutingModule,
     MaterialModule,
     HttpClientModule,
-    FlexLayoutModule,
     BrowserAnimationsModule,
     NgxSpinnerModule,
     FormsModule,

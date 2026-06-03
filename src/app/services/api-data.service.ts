@@ -103,9 +103,13 @@ export class ApiDataService {
   }
 
   getEnaSubmission(accession: string) {
-    const url = `${this.hostSetting.host}data/submissions/_search/?q=study_id:${accession}`;
+    const url = `${this.hostSetting.host}data/submissions/_search/`;
+    // Treat the accession as a single Lucene phrase term so a route param cannot
+    // inject query operators. Inside a quoted phrase only " and \ are special.
+    const escaped = (accession || '').replace(/(["\\])/g, '\\$1');
+    const params = new HttpParams().set('q', `study_id:"${escaped}"`);
 
-    return this.http.get<any>(url).pipe(
+    return this.http.get<any>(url, {params: params}).pipe(
       retry(3),
       catchError(this.handleError),
     );
