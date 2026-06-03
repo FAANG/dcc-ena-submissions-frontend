@@ -1,47 +1,47 @@
-<div fxFlex.lt-sm="90" fxFlex.lt-md="80" fxFlex="1140px">
+<div class="detail-container">
 <div *ngIf="submission">
   <h2>{{submission.study_id}}</h2>
   <hr>
-  <div fxLayout="column" fxLayoutGap="3%">
-    <div fxLayout="row">
-      <div fxFlex="15">Study Name:</div>
+  <div class="detail-rows">
+    <div class="detail-row">
+      <div class="detail-label">Study Name:</div>
       <div>
-        <a [href]="ena_prefix + submission?.study_id" target="_blank">{{submission?.study_id}}</a>
+        <a [href]="ena_prefix + submission?.study_id" target="_blank" rel="noopener noreferrer">{{submission?.study_id}}</a>
       </div>
     </div>
 
-    <div fxLayout="row" *ngIf="submittedExperiments.length !== 0">
-      <div fxFlex="15">Experiments Submitted:</div>
+    <div class="detail-row" *ngIf="submittedExperiments.length !== 0">
+      <div class="detail-label">Experiments Submitted:</div>
       <div>{{submittedExperiments.length}}</div>
     </div>
 
-    <div fxLayout="row" *ngIf="availableExperiments.length !== 0">
-      <div fxFlex="15">Experiments Available in FAANG data portal:</div>
+    <div class="detail-row" *ngIf="availableExperiments.length !== 0">
+      <div class="detail-label">Experiments Available in FAANG data portal:</div>
       <div>{{availableExperiments.length}}</div>
     </div>
 
-    <div fxLayout="row" *ngIf="submittedAnalyses.length !== 0">
-      <div fxFlex="15">Analyses Submitted:</div>
+    <div class="detail-row" *ngIf="submittedAnalyses.length !== 0">
+      <div class="detail-label">Analyses Submitted:</div>
       <div>{{submittedAnalyses.length}}</div>
     </div>
 
-    <div fxLayout="row" *ngIf="availableAnalyses.length !== 0">
-      <div fxFlex="15">Analyses Available in FAANG data portal:</div>
+    <div class="detail-row" *ngIf="availableAnalyses.length !== 0">
+      <div class="detail-label">Analyses Available in FAANG data portal:</div>
       <div>{{availableAnalyses.length}}</div>
     </div>
 
 
 
-    <div fxLayout="row">
-      <div fxFlex="15">Alias:</div>
+    <div class="detail-row">
+      <div class="detail-label">Alias:</div>
       <div>{{submission?.study_alias}}</div>
     </div>
-    <div fxLayout="row">
-      <div fxFlex="15">Assay Type:</div>
+    <div class="detail-row">
+      <div class="detail-label">Assay Type:</div>
       <div>{{submission?.assay_type}}</div>
     </div>
-    <div fxLayout="row">
-      <div fxFlex="15">Secondary Project:</div>
+    <div class="detail-row">
+      <div class="detail-label">Secondary Project:</div>
       <div>{{submission?.secondary_project}}</div>
     </div>
   </div>

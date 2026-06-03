@@ -1,3 +1,20 @@
+/* Layout utilities formerly provided by Bootstrap (now removed) */
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.float-right {
+  float: right;
+}
+
 .long-list {
   max-height: 300px;
   overflow-y: scroll;
@@ -11,7 +28,8 @@
   border-bottom: 1px solid rgba(0,0,0,.125);
 }
 
-.mat-card {
+/* Angular Material 19 (MDC) renders the host element as .mat-mdc-card */
+.mat-mdc-card {
   margin-bottom: 20px;
   padding: 0;
 }
@@ -45,5 +63,6 @@ h6 {
   color: black;
   width: 4em;
   padding: 0.4em 0.6em 0.4em 0.6em;
-  border-radius: 7px
+  border-radius: 7px;
+  text-align: center;
 }

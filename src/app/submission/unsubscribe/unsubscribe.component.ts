@@ -4,6 +4,7 @@ import {Title} from '@angular/platform-browser';
 import {ApiDataService} from '../../services/api-data.service';
 
 @Component({
+  standalone: false,
   selector: 'app-unsubscribe',
   templateUrl: './unsubscribe.component.html',
   styleUrls: ['./unsubscribe.component.css']

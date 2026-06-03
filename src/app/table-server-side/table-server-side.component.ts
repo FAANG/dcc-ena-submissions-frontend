@@ -11,6 +11,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
+  standalone: false,
   selector: 'app-table-server-side',
   templateUrl: './table-server-side.component.html',
   styleUrls: ['./table-server-side.component.css']

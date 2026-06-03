@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {AggregationService} from "../services/aggregation.service";
 
 @Component({
+  standalone: false,
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css']
@@ -15,11 +16,12 @@ export class FilterComponent implements OnInit, OnDestroy {
   subsription: Subscription;
   isCollapsed = true;
   itemLimit: number;
-  currentActiveFilters = this.aggregationService.currentActiveFilters;
+  currentActiveFilters: any;
 
   constructor(
     private aggregationService: AggregationService,
     private cdRef: ChangeDetectorRef) {
+    this.currentActiveFilters = this.aggregationService.currentActiveFilters;
   }
 
   ngOnInit() {
@@ -81,6 +83,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subsription.unsubscribe();
+    this.subsription?.unsubscribe();
   }
 }

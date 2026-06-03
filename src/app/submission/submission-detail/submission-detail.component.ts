@@ -5,6 +5,7 @@ import {Title} from '@angular/platform-browser';
 import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
+  standalone: false,
   selector: 'app-submission-detail',
   templateUrl: './submission-detail.component.html',
   styleUrls: ['./submission-detail.component.css']

@@ -1,3 +1,32 @@
+.submissions-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
+}
+
+.submissions-sidebar {
+  flex: 1 1 17%;
+  max-width: 17%;
+}
+
+.submissions-content {
+  flex: 1 1 83%;
+  max-width: 83%;
+}
+
+/* flex-layout lt-md breakpoint (< 960px): stack the filters above the table */
+@media (max-width: 959.98px) {
+  .submissions-layout {
+    flex-direction: column;
+  }
+
+  .submissions-sidebar,
+  .submissions-content {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
+
 .unsorted {
   color: lightgrey;
 }

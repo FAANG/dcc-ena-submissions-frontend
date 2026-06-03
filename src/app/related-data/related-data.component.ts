@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {ApiDataService} from '../services/api-data.service';
-import * as FileSaver from 'file-saver';
 import setting from './related-data.component.setting.json';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -10,6 +9,7 @@ import {Observable, of as observableOf} from 'rxjs';
 import { FormControl } from '@angular/forms';
 
 @Component({
+  standalone: false,
   selector: 'app-related-data',
   templateUrl: './related-data.component.html',
   styleUrls: ['./related-data.component.css']

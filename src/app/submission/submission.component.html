@@ -2,13 +2,13 @@
   <h2>ENA Submissions</h2>
   <hr>
 
-  <div fxLayoutGap="2%" fxLayout="row" fxLayout.lt-md="column">
-    <div fxFlex="17">
+  <div class="submissions-layout">
+    <div class="submissions-sidebar">
       <app-filter title="Assay type" [filterSize]=50></app-filter>
       <app-filter title="Secondary project" [filterSize]=5></app-filter>
     </div>
 
-    <div fxFlex="83" class="table-responsive">
+    <div class="submissions-content table-responsive">
       <div *ngIf="hasActiveFilters()">
         <app-active-filter *ngIf="hasActiveFilters()"></app-active-filter>
         <button mat-raised-button (click)="removeFilter()">Remove all filters</button>

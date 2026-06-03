@@ -52,10 +52,25 @@ h3{
   color: #6f6f71;
 }
 
+.rd-header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* flex-layout lt-md breakpoint (< 960px) */
+@media (max-width: 959.98px) {
+  .rd-header-row {
+    flex-direction: column;
+  }
+}
+
 .search-element {
   display: flex;
   width: 100%;
   margin-bottom: 10px;
+  gap: 2%;
 }
 
 .select-search-element {
