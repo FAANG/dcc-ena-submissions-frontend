@@ -26,7 +26,7 @@
     "ngx-spinner": "^19.0.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.0",
+    "@angular-devkit/build-angular": "^21.2.13",
     "@angular/cli": "^19.2.0",
     "@angular/compiler-cli": "^19.2.0",
     "@types/jasmine": "~5.1.0",
